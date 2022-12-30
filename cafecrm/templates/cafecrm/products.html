@@ -1,0 +1,20 @@
+{% extends 'cafecrm/base.html' %}
+{%  load static %}
+
+{% block title %}
+    {{ title }}
+{% endblock %}
+
+{% block content %}
+<div class="card no-border">
+        {% if all_products %}
+            {% for el in all_products %}
+                <p><b>{{ el.id }}</b>, <b>{{ el.product_name }}</b>, <i>{{ el.unit }}</i></p>
+            {% endfor %}
+        {% else %}
+            В базе нет продуктов
+
+        {% endif %}
+<!-- <a href=" { url 'add_product' %}"><input type="button" value="Add product"></a> -->
+    </div>
+{% endblock %}

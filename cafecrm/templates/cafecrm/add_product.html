@@ -1,0 +1,33 @@
+{% extends 'cafecrm/base.html' %}
+{%  load static %}
+
+{% block title %}
+    {{ title }}
+{% endblock %}
+
+{% block content %}
+ <div class="send-message col-6 d-flex justify-content-center" >
+        {% if not sent %} <!--добавляем флаг (добавлено во вьюшку) если не было отправлено, открываем форму-->
+            <form method="post">
+            <div><p>Add a new product</p></div>
+            {% csrf_token %}
+            <div class="form-group">
+                Select product type: {{ form.product_type }}
+            </div>
+            <div class="form-group">
+                Input product name: {{ form.product_name }}
+            </div>
+            <div class="form-group">
+                Input product unit:{{ form.unit }}
+            </div>
+
+            <div class="form-group">
+                <input type="submit" class="btn btn-primary btn-send-message" value="Add product">
+            </div>
+            <span>{{ error }}</span>
+        </form>
+        {% else %}  <!--если отправлено-->
+            <br> Product added.
+        {% endif %}
+    </div>
+{% endblock %}

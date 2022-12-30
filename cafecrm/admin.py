@@ -2,36 +2,21 @@ from django.contrib import admin
 from .models import *
 
 
-@admin.register(Goods)
+@admin.register(Products)
 class GoodsAdmin(admin.ModelAdmin):
-    list_display = ['title', 'unit', 'category']
+    list_display = ['product_name', 'unit', 'product_type']
 
 
-@admin.register(Operations)
-class OperationsAdmin(admin.ModelAdmin):
-    list_display = ['username', 'operation', 'create_date']
+class DrinkRecipesInline(admin.TabularInline):
+    model = DrinkItems
+    raw_id_fields = ['ingredient']
 
 
-@admin.register(Drinks)
 class DrinksAdmin(admin.ModelAdmin):
-    list_display = ['drink_name']
+    list_display = ['drink_name', ]
+    inlines = [DrinkRecipesInline]
+
+admin.site.register(Drinks, DrinksAdmin)
 
 
-@admin.register(DrinkRecipes)
-class DrinkRecipesAdmin(admin.ModelAdmin):
-    list_display = ['drink_name', 'ingredient', 'quantity']
 
-
-@admin.register(Documents)
-class DocumentsAdmin(admin.ModelAdmin):
-    list_display = ['id', 'document_type', 'apply_flag', 'create_date', 'update_date', 'to_remove']
-
-
-@admin.register(DocumentItems)
-class DocumentItemsAdmin(admin.ModelAdmin):
-    list_display = ['document', 'good', 'count']
-
-
-@admin.register(StorageItems)
-class StorageItemAdmin(admin.ModelAdmin):
-    list_display = ['id', 'item', 'count', 'to_remove']
