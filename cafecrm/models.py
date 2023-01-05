@@ -28,6 +28,9 @@ class Products(models.Model):
     product_name = models.CharField(max_length=250, verbose_name='Наименование')
     unit = models.CharField(max_length=20, choices=UNITS, verbose_name='Единица измерения')
     product_type = models.CharField(max_length=20, choices=PRODUCT_TYPE, verbose_name='Категория')
+    slug = models.SlugField(max_length=200, db_index=True, unique='product_name')
+    price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    stock = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return '{}'.format(self.product_name)
@@ -41,6 +44,7 @@ class Products(models.Model):
 # Напитки / Drinks (cafe menu)
 class Drinks(models.Model):
     drink_name = models.CharField(max_length=100, verbose_name='Название напитка')
+    slug = models.SlugField(max_length=200, db_index=True, unique='drink_name')
 
     def __str__(self):
         return '{}'.format(self.drink_name)
