@@ -1,6 +1,7 @@
 import uuid
 
 from django.db import models
+from django.urls import reverse
 from django.utils import timezone
 
 
@@ -41,6 +42,11 @@ class Products(models.Model):
         verbose_name = 'Product'
         verbose_name_plural = 'Products'
         ordering = ['product_name']
+        index_together = (('id', 'slug'),)
+
+    def get_absolute_url(self):
+        return reverse('product_detail',
+                       args=[self.slug, ])
 
 
 # Напитки / Drinks (cafe menu)

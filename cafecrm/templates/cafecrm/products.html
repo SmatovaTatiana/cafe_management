@@ -7,9 +7,12 @@
 
 {% block content %}
 <div class="card no-border">
-        {% if all_products %}
-            {% for el in all_products %}
-                <p><b>{{ el.id }}</b>, <b>{{ el.product_name }}</b>, <i>{{ el.unit }}</i></p>
+        {% if products %}
+            {% for product in products %}
+                <p><b>{{ product.id }}</b> ---
+                    <b><a href="{{ product.get_absolute_url }}">{{ product.product_name }}</a></b>
+                     --- {{ product.stock }}-<i>{{ product.unit }}</i></p>
+                <hr>
             {% endfor %}
         {% else %}
             В базе нет продуктов

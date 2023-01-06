@@ -23,3 +23,4 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('cafecrm.urls')),
 ]
+# , namespace='cafecrm'

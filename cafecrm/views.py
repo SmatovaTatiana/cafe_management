@@ -1,7 +1,7 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView
-
+from django.utils.text import slugify
 from .models import *
 from .forms import AddProductForm, ProductsFormSet
 
@@ -11,8 +11,20 @@ def index(request):
 
 
 def products(request):
-    all_products = Products.objects.all().order_by('product_name')
-    return render(request, 'cafecrm/products.html', {'title': 'Products', 'all_products': all_products})
+    products = Products.objects.all().order_by('product_name')
+    return render(request,
+                  'cafecrm/products.html',
+                  {'title': 'Products',
+                   'products': products}
+                  )
+
+
+def product_detail(request, slug):
+    product = get_object_or_404(Products,
+                                slug=slug)
+    return render(request,
+                  'cafecrm/product_detail.html',
+                  {'product': product})
 
 
 # simple form
@@ -48,9 +60,7 @@ class ProductAddView(TemplateView):
 
     # Define method to handle POST request
     def post(self, *args, **kwargs):
-
         formset = ProductsFormSet(data=self.request.POST)
-
         # Check if submitted forms are valid
         if formset.is_valid():
             formset.save()
