@@ -35,14 +35,14 @@ class Products(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     stock = models.PositiveIntegerField(default=0)
 
-    def __str__(self):
-        return '{}'.format(self.product_name)
-
     class Meta:
         verbose_name = 'Product'
         verbose_name_plural = 'Products'
         ordering = ['product_name']
         index_together = (('id', 'slug'),)
+
+    def __str__(self):
+        return '{}'.format(self.product_name)
 
     def get_absolute_url(self):
         return reverse('product_detail',

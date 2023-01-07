@@ -1,0 +1,12 @@
+{% extends "cafecrm/base.html" %}
+{% load static %}
+{% block title %}
+    Products
+{% endblock %}
+{% block content %}
+    <div class="product-detail">
+        <h3>{{ product.product_name }}</h3>
+        <p class="price">${{ product.price }}, in stock - {{ product.stock }}, {{ product.unit }}</p>
+
+        </div>
+{% endblock %}

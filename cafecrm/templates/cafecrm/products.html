@@ -6,18 +6,26 @@
 {% endblock %}
 
 {% block content %}
-<div class="card no-border">
+<div class="item">
+
         {% if products %}
             {% for product in products %}
-                <p><b>{{ product.id }}</b> ---
-                    <b><a href="{{ product.get_absolute_url }}">{{ product.product_name }}</a></b>
-                     --- {{ product.stock }}-<i>{{ product.unit }}</i></p>
-                <hr>
+
+                    <a href="{{ product.get_absolute_url }}">{{ product.product_name }}</a>
+                    {{ product.stock }}
+                    {{ product.unit }}
+                    {{ product.price }}
+                    <form action="{% url 'doc_temp:doc_add' product.id %}" method="post">
+                            {{ doc_product_form }}
+                            {% csrf_token %}
+                            <input type="submit" value="Add to document">
+                        </form>
+<hr>
             {% endfor %}
         {% else %}
             В базе нет продуктов
-
         {% endif %}
-<!-- <a href=" { url 'add_product' %}"><input type="button" value="Add product"></a> -->
-    </div>
+
+</div>
+
 {% endblock %}

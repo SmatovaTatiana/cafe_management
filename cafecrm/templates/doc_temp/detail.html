@@ -1,0 +1,47 @@
+{% extends "cafecrm/base.html" %}
+{% load static %}
+{% block title %}
+    Temp document
+{% endblock %}
+{% block content %}
+    <h1>Your temp document</h1>
+    <table class="cart">
+        <thead>
+        <tr>
+
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Remove</th>
+            <th>Unit price</th>
+            <th>Price</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in doc %}
+            {% with product=item.product %}
+                <tr>
+                    <td>
+                        <a href="{{ product.get_absolute_url }}">
+                            {{ product.product_name }}
+                        </a>
+                    </td>
+                    <td>{{ item.quantity }}</td>
+                    <td><a href="{% url "doc_temp:doc_remove" product.id %}">Remove</a></td>
+                    <td class="num">${{ item.price }}</td>
+                    <td class="num">${{ item.total_price }}</td>
+                </tr>
+            {% endwith %}
+        {% endfor %}
+        <tr class="total">
+            <td>Total</td>
+            <td colspan="4"></td>
+            <td class="num">${{ doc.get_total_price }}</td>
+
+        </tr>
+        </tbody>
+    </table>
+    <p class="text-right">
+        <a href="{% url 'products' %}" class="button light">Back to product list</a>
+        <a href="#" class="button">Checkout</a>
+    </p>
+{% endblock %}

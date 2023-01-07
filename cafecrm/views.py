@@ -4,6 +4,7 @@ from django.views.generic import TemplateView
 from django.utils.text import slugify
 from .models import *
 from .forms import AddProductForm, ProductsFormSet
+from doc_temp.forms import DoctempAddProductForm
 
 
 def index(request):
@@ -12,10 +13,12 @@ def index(request):
 
 def products(request):
     products = Products.objects.all().order_by('product_name')
+    doc_product_form = DoctempAddProductForm()
     return render(request,
                   'cafecrm/products.html',
                   {'title': 'Products',
-                   'products': products}
+                   'products': products,
+                   'doc_product_form': doc_product_form}
                   )
 
 
