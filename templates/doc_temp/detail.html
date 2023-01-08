@@ -41,7 +41,7 @@
         </tbody>
     </table>
     <p class="text-right">
-        <a href="{% url 'products' %}" class="button light">Back to product list</a>
-        <a href="#" class="button">Checkout</a>
+        <a href="{% url 'cafecrm:products' %}" class="button light">Back to product list</a>
+        <a href="{% url 'cafecrm:order_create' %}" class="button">Checkout</a>
     </p>
 {% endblock %}

@@ -2,8 +2,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView
 from django.utils.text import slugify
-from .models import *
-from .forms import AddProductForm, ProductsFormSet
+from .models import Products, DrinkItem, Drink
+from .forms import AddProductForm, ProductsFormSet, DrinkCreateForm
+from doc_temp.doc_temp import Doctemp
 from doc_temp.forms import DoctempAddProductForm
 
 
@@ -67,6 +68,34 @@ class ProductAddView(TemplateView):
         # Check if submitted forms are valid
         if formset.is_valid():
             formset.save()
-            return redirect(reverse_lazy("products"))
+            return redirect(reverse_lazy('cafecrm:products'))
 
         return self.render_to_response({'product_formset': formset})
+
+
+def order_create(request):
+    doc = Doctemp(request)
+    sent = False
+    drink_name = ''
+    if request.method == 'POST':
+        form = DrinkCreateForm(request.POST)
+        if form.is_valid():
+            drink_name = form.cleaned_data.get('drink_name')
+            drink = form.save()
+            sent = True
+            for item in doc:
+                DrinkItem.objects.create(drink=drink,
+                                         product=item['product'],
+                                         quantity=item['quantity'])
+            # очистка корзины
+            doc.clear()
+    else:
+        form = DrinkCreateForm
+    context = {
+        'form': form,
+        'doc': doc,
+        'sent': sent,
+        'title': 'Create drink',
+        'drink_name': drink_name,
+    }
+    return render(request, 'cafecrm/create.html', context)

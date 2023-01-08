@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import *
+from .models import Products, Drink, DrinkItem
 
 
 @admin.register(Products)
@@ -8,17 +8,14 @@ class ProductsAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('product_name', )}
 
 
-class DrinkRecipesInline(admin.TabularInline):
-    model = DrinkItems
-    raw_id_fields = ['ingredient']
+class DrinkItemInline(admin.TabularInline):
+    model = DrinkItem
+    raw_id_fields = ['product']
 
 
-class DrinksAdmin(admin.ModelAdmin):
-    list_display = ['drink_name', ]
-    prepopulated_fields = {'slug': ('drink_name',)}
-    inlines = [DrinkRecipesInline]
-
-admin.site.register(Drinks, DrinksAdmin)
+class DrinkAdmin(admin.ModelAdmin):
+    list_display = ['id', 'drink_name']
+    inlines = [DrinkItemInline]
 
 
-
+admin.site.register(Drink, DrinkAdmin)

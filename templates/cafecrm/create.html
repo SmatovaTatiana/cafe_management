@@ -1,0 +1,45 @@
+{% extends 'cafecrm/base.html' %}
+{%  load static %}
+
+{% block title %}
+    {{ title }}
+{% endblock %}
+
+{% block content %}
+
+    {% if not sent %}
+         <h4>New Drink</h4>
+        <!--form-->
+        <form action="" method="post" class="order-form">
+            {{ form.as_p }}
+
+            <!--ingredients-->
+    <div class="order-info">
+        <h3>Your drink parts: </h3>
+        <ul>
+            {% for item in doc %}
+                <li>
+                    {{ item.product.product_name }} - {{ item.quantity }} {{ item.product.unit }}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+                    <p><input type="submit" value="Add drink"></p>
+            {% csrf_token %}
+        </form>
+    {% else %}
+    <!--success-->
+         <h4>Drink - {{ drink_name }} - was added to menu</h4>
+    <!--ingredients-->
+    <div class="order-info">
+        <h3>Your drink parts: </h3>
+        <ul>
+            {% for item in doc %}
+                <li>
+                    {{ item.product.product_name }} - {{ item.quantity }} {{ item.product.unit }}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+{% endblock %}

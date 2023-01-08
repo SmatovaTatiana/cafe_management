@@ -1,19 +1,6 @@
 import uuid
-
 from django.db import models
 from django.urls import reverse
-from django.utils import timezone
-
-
-# вспмогательная модель для фиксирования даты изменения состояния объектов
-# additional model for fixing the date of changing the object states
-class BaseDataModel(models.Model):
-    create_date = models.DateTimeField(verbose_name='Дата создания', default=timezone.now)
-    update_date = models.DateTimeField(verbose_name='Дата изменения', default=timezone.now)
-    to_remove = models.BooleanField(verbose_name='Помечен на удаление', null=False, default=False)
-
-    class Meta:
-        abstract = True
 
 
 # товары / goods
@@ -45,33 +32,32 @@ class Products(models.Model):
         return '{}'.format(self.product_name)
 
     def get_absolute_url(self):
-        return reverse('product_detail',
+        return reverse('cafecrm:product_detail',
                        args=[self.slug, ])
 
 
-# Напитки / Drinks (cafe menu)
-class Drinks(models.Model):
-    drink_name = models.CharField(max_length=100, verbose_name='Название напитка')
-    slug = models.SlugField(max_length=200, db_index=True, unique='drink_name', default=uuid.uuid4)
-
-    def __str__(self):
-        return '{}'.format(self.drink_name)
+class Drink(models.Model):
+    drink_name = models.CharField(max_length=50)
 
     class Meta:
-        verbose_name = 'Напиток'
-        verbose_name_plural = 'Напитки'
-        ordering = ['drink_name']
-
-
-# recipe / рецепт
-class DrinkItems(models.Model):
-    drink_name = models.ForeignKey(Drinks, on_delete=models.CASCADE, verbose_name='Напиток')
-    ingredient = models.ForeignKey(Products, on_delete=models.PROTECT, verbose_name='Продукт')
-    quantity = models.IntegerField(verbose_name='Количество', default=1)
+        ordering = ('drink_name',)
+        verbose_name = 'Drink'
+        verbose_name_plural = 'Drinks'
 
     def __str__(self):
-        return '{}'.format(self.id)
+        return 'Order {}'.format(self.drink_name)
 
-    class Meta:
-        verbose_name = 'Ингридиент'
-        verbose_name_plural = 'Ингридиенты'
+    @classmethod
+    def get_or_none(cls, **kwargs):
+        try:
+            return cls.objects.get(**kwargs)
+        except cls.DoesNotExist:
+            return None
+
+class DrinkItem(models.Model):
+    drink = models.ForeignKey(Drink, related_name='items', on_delete=models.CASCADE)
+    product = models.ForeignKey(Products, related_name='drink_items', on_delete=models.PROTECT)
+    quantity = models.PositiveIntegerField(default=0)
+
+    def __str__(self):
+        return '{}'.format(self.drink)
