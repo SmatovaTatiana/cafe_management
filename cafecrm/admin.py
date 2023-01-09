@@ -4,8 +4,9 @@ from .models import Products, Drink, DrinkItem
 
 @admin.register(Products)
 class ProductsAdmin(admin.ModelAdmin):
-    list_display = ['product_name', 'unit', 'product_type', 'price', 'stock', 'slug']
+    list_display = ['id', 'product_name', 'unit', 'product_type', 'price', 'stock', 'slug']
     prepopulated_fields = {'slug': ('product_name', )}
+    ordering = ['product_type']
 
 
 class DrinkItemInline(admin.TabularInline):
@@ -14,7 +15,8 @@ class DrinkItemInline(admin.TabularInline):
 
 
 class DrinkAdmin(admin.ModelAdmin):
-    list_display = ['id', 'drink_name']
+    list_display = ['id', 'drink_name', 'slug']
+    prepopulated_fields = {'slug': ('drink_name', )}
     inlines = [DrinkItemInline]
 
 

@@ -1,9 +1,10 @@
 import uuid
 from django.db import models
 from django.urls import reverse
+from django.utils.text import slugify
+from unidecode import unidecode
 
 
-# товары / goods
 class Products(models.Model):
     PRODUCT = 'product'
     SNACK = 'snack'
@@ -18,7 +19,7 @@ class Products(models.Model):
     product_name = models.CharField(max_length=250, verbose_name='Наименование')
     unit = models.CharField(max_length=20, choices=UNITS, verbose_name='Единица измерения')
     product_type = models.CharField(max_length=20, choices=PRODUCT_TYPE, verbose_name='Категория')
-    slug = models.SlugField(max_length=200, db_index=True, unique='product_name', default=uuid.uuid4)
+    slug = models.SlugField(max_length=200, db_index=True, unique='product_name')
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     stock = models.PositiveIntegerField(default=0)
 
@@ -35,14 +36,27 @@ class Products(models.Model):
         return reverse('cafecrm:product_detail',
                        args=[self.slug, ])
 
+    def save(self, *args, **kwargs):  # new
+        if not self.slug:
+            self.slug = slugify(unidecode(self.product_name))
+        return super().save(*args, **kwargs)
 
 class Drink(models.Model):
     drink_name = models.CharField(max_length=50)
+    slug = models.SlugField(unique='drink_name', blank=True)
 
     class Meta:
         ordering = ('drink_name',)
         verbose_name = 'Drink'
         verbose_name_plural = 'Drinks'
+
+    def save(self, *args, **kwargs):  # new
+        if not self.slug:
+            self.slug = slugify(unidecode(self.drink_name))
+        return super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse("cafecrm:drink_detail", kwargs={"slug": self.slug})
 
     def __str__(self):
         return 'Order {}'.format(self.drink_name)

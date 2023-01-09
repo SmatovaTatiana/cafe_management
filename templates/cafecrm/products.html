@@ -20,7 +20,9 @@
                             {% csrf_token %}
                             <input type="submit" value="Add to document">
                         </form>
-<hr>
+<hr>                {% if sent %}
+                        {{ message }}
+                    {% endif %}
             {% endfor %}
         {% else %}
             В базе нет продуктов

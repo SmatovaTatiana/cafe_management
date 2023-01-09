@@ -32,15 +32,17 @@ def product_detail(request, slug):
 
 
 # simple form
-def add_product(request):
+def add_simple_product(request):
     sent = False
     error = ''
     if request.method == 'POST':
         form = AddProductForm(request.POST)
         if form.is_valid():
+            product_name = form.cleaned_data.get('product_name')
+            slug = slugify(product_name)
             form.save()
             sent = True
-            return redirect(reverse_lazy("products"))
+            return redirect(reverse_lazy("cafecrm:products"))
         else:
             error = 'Form is not valid'
 
@@ -48,12 +50,13 @@ def add_product(request):
     context = {
         'form': form,
         'error': error,
-        'sent': sent
+        'sent': sent,
+
     }
-    return render(request, 'cafecrm/add_product.html', context)
+    return render(request, 'cafecrm/add_simple_product.html', context)
 
 
-# View for adding product multiply form
+'''# View for adding product multiply form
 class ProductAddView(TemplateView):
     template_name = "cafecrm/product_add.html"
 
@@ -65,22 +68,25 @@ class ProductAddView(TemplateView):
     # Define method to handle POST request
     def post(self, *args, **kwargs):
         formset = ProductsFormSet(data=self.request.POST)
-        # Check if submitted forms are valid
         if formset.is_valid():
+            product_name = formset.cleaned_data.get('product_name')
+            slug = slugify(product_name)
             formset.save()
             return redirect(reverse_lazy('cafecrm:products'))
 
-        return self.render_to_response({'product_formset': formset})
+        return self.render_to_response({'product_formset': formset})'''
 
 
-def order_create(request):
+def drink_create(request):
     doc = Doctemp(request)
     sent = False
     drink_name = ''
+    slug = ''
     if request.method == 'POST':
         form = DrinkCreateForm(request.POST)
         if form.is_valid():
             drink_name = form.cleaned_data.get('drink_name')
+            slug = slugify(drink_name)
             drink = form.save()
             sent = True
             for item in doc:
@@ -97,5 +103,10 @@ def order_create(request):
         'sent': sent,
         'title': 'Create drink',
         'drink_name': drink_name,
+        'slug': slug
     }
     return render(request, 'cafecrm/create.html', context)
+
+
+def drink_detail(request):
+    return None

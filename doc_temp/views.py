@@ -15,6 +15,7 @@ def doc_add(request, product_id):
         doc.add(product=product,
                  quantity=cd['quantity'],
                  update_quantity=cd['update'])
+
     return redirect('doc_temp:doc_detail')
 
 
