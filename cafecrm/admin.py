@@ -9,6 +9,7 @@ class ProductsAdmin(admin.ModelAdmin):
     ordering = ['product_type']
 
 
+
 class DrinkItemInline(admin.TabularInline):
     model = DrinkItem
     raw_id_fields = ['product']

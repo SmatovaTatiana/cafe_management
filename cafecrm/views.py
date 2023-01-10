@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, DetailView
 from django.utils.text import slugify
 from .models import Products, DrinkItem, Drink, DocumentItem
 from .forms import AddProductForm, ProductsFormSet, DrinkCreateForm, DocumentCreateForm
@@ -108,8 +108,27 @@ def drink_create(request):
     return render(request, 'cafecrm/drink_create.html', context)
 
 
-def drink_detail(request):
-    return None
+def drinks(request):
+    drinks = Drink.objects.all().order_by('drink_name')
+    context = {
+        'title': 'Drinks',
+        'drinks': drinks,
+    }
+    return render(request,
+                  'cafecrm/drinks.html', context)
+
+
+def drink_detail(request, slug):
+    drink = get_object_or_404(Drink,
+                                slug=slug
+                              )
+    drink_items = DrinkItem.objects.filter(drink_id=drink.pk)
+    context = {
+        'drink_items': drink_items,
+        'drink': drink
+    }
+    return render(request,
+                  'cafecrm/drink_detail.html', context)
 
 
 def document_create(request):

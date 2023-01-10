@@ -1,0 +1,24 @@
+{% extends 'cafecrm/base.html' %}
+{%  load static %}
+
+{% block title %}
+    {{ title }}
+{% endblock %}
+
+{% block content %}
+<div class="item">
+
+        {% if drinks %}
+            {% for drink in drinks %}
+                <a href="{{ drink.get_absolute_url }}">{{ drink.drink_name }}</a>
+                <hr>
+            {% endfor %}
+        {% else %}
+            There are no drinks in menu.
+        {% endif %}
+    <br><a href="{% url 'cafecrm:products' %}" class="button light">Add product for creating new drink</a>
+
+
+</div>
+
+{% endblock %}

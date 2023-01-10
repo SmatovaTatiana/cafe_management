@@ -4,6 +4,7 @@ from django.urls import path
 from . import views
 # from .views import ProductAddView
 
+
 app_name='cafecrm'
 
 urlpatterns = [
@@ -13,7 +14,8 @@ urlpatterns = [
     path('products', views.products, name='products'),
     path('drink_create', views.drink_create, name='drink_create'),
     path('document_create', views.document_create, name='document_create'),
-    path('drink_detail', views.drink_detail, name='drink_detail'),
+    path('drinks', views.drinks, name='drinks'),
+    path('<slug:slug>', views.drink_detail, name='drink_detail'),
     path('<slug:slug>', views.product_detail, name='product_detail'),
 
 ]

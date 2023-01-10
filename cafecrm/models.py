@@ -22,6 +22,7 @@ class Products(models.Model):
     slug = models.SlugField(max_length=200, db_index=True, unique='product_name')
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     stock = models.PositiveIntegerField(default=0)
+    description = models.TextField(blank=True)
 
     class Meta:
         verbose_name = 'Product'
@@ -33,8 +34,7 @@ class Products(models.Model):
         return '{}'.format(self.product_name)
 
     def get_absolute_url(self):
-        return reverse('cafecrm:product_detail',
-                       args=[self.slug, ])
+        return reverse('cafecrm:product_detail', args=[self.slug, ])
 
     def save(self, *args, **kwargs):  # new
         if not self.slug:
@@ -57,7 +57,7 @@ class Drink(models.Model):
         return super().save(*args, **kwargs)
 
     def get_absolute_url(self):
-        return reverse("cafecrm:drink_detail", kwargs={"slug": self.slug})
+        return reverse('cafecrm:drink_detail', args=[self.slug, ])
 
     def __str__(self):
         return 'Drink {}'.format(self.drink_name)
@@ -76,7 +76,7 @@ class DrinkItem(models.Model):
     quantity = models.PositiveIntegerField(default=0)
 
     def __str__(self):
-        return '{}'.format(self.drink)
+        return '{}'.format(self.product)
 
 
 class Document(models.Model):
