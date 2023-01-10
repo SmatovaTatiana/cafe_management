@@ -10,9 +10,10 @@
         <tr>
 
             <th>Product</th>
-            <th>Quantity</th>
+            <th>Update Quantity</th>
             <th>Remove</th>
-            <th>Price</th>
+            <th>Quantity</th>
+
         </tr>
         </thead>
         <tbody>
@@ -24,24 +25,25 @@
                             {{ product.product_name }}
                         </a>
                     </td>
-                    <td>{{ item.quantity }}</td>
+                    <td> <form action="{% url 'doc_temp:doc_add' product.id %}" method="post">
+                {{ item.update_quantity_form.quantity }}
+                {{ item.update_quantity_form.update }}
+                <input type="submit" value="Обновить">
+                {% csrf_token %}
+              </form></td>
                     <td><a href="{% url "doc_temp:doc_remove" product.id %}">Remove</a></td>
-                    <td class="num">${{ item.price }}</td>
-                    <td class="num">${{ item.total_price }}</td>
+                    <td class="num">{{ item.quantity }}</td>
                 </tr>
             {% endwith %}
         {% endfor %}
-        <tr class="total">
-            <td>Total</td>
-            <td colspan="4"></td>
-            <td class="num">${{ doc.get_total_price }}</td>
-
-        </tr>
         </tbody>
     </table>
-
-    <p class="text-right">
+<br>
+    <p>
         <a href="{% url 'cafecrm:products' %}" class="button light">Back to product list</a>
-        <a href="{% url 'cafecrm:order_create' %}" class="button">Checkout</a>
+        <br>
+        <a href="{% url 'cafecrm:drink_create' %}" class="button">Create new drink</a>
+        <br>
+        <a href="{% url 'cafecrm:document_create' %}" class="button">Create stock document</a>
     </p>
 {% endblock %}

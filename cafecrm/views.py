@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView
 from django.utils.text import slugify
-from .models import Products, DrinkItem, Drink
-from .forms import AddProductForm, ProductsFormSet, DrinkCreateForm
+from .models import Products, DrinkItem, Drink, DocumentItem
+from .forms import AddProductForm, ProductsFormSet, DrinkCreateForm, DocumentCreateForm
 from doc_temp.doc_temp import Doctemp
 from doc_temp.forms import DoctempAddProductForm
 
@@ -105,8 +105,45 @@ def drink_create(request):
         'drink_name': drink_name,
         'slug': slug
     }
-    return render(request, 'cafecrm/create.html', context)
+    return render(request, 'cafecrm/drink_create.html', context)
 
 
 def drink_detail(request):
     return None
+
+
+def document_create(request):
+    doc = Doctemp(request)
+    sent = False
+    document = []
+    if request.method == 'POST':
+        form = DocumentCreateForm(request.POST)
+        if form.is_valid():
+            document = form.save()
+            sent = True
+            for item in doc:
+                DocumentItem.objects.create(document=document,
+                                         product=item['product'],
+                                         quantity=item['quantity'])
+                # update product quantity in stock
+                if document.document_type == 'Receipt':
+                    objects = Products.objects.all()
+                    for el in objects:
+                        if el.product_name == str(item['product']):
+                            el.stock += item['quantity']
+                            el.save()
+
+                # clear temp document
+            doc.clear()
+            document = document
+
+    else:
+        form = DocumentCreateForm
+    context = {
+        'document': document,
+        'form': form,
+        'doc': doc,
+        'sent': sent,
+        'title': 'Create document'
+    }
+    return render(request, 'cafecrm/create_document.html', context)

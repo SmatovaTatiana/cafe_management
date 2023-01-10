@@ -11,10 +11,7 @@
         {% if products %}
             {% for product in products %}
 
-                    <a href="{{ product.get_absolute_url }}">{{ product.product_name }}</a>
-                    {{ product.stock }}
-                    {{ product.unit }}
-                    {{ product.price }}
+                    <a href="{{ product.get_absolute_url }}">{{ product.product_name }}</a> - in stock {{ product.stock }}
                     <form action="{% url 'doc_temp:doc_add' product.id %}" method="post">
                             {{ doc_product_form }}
                             {% csrf_token %}

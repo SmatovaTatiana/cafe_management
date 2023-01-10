@@ -26,7 +26,7 @@ class Products(models.Model):
     class Meta:
         verbose_name = 'Product'
         verbose_name_plural = 'Products'
-        ordering = ['product_name']
+        ordering = ['product_type', 'product_name']
         index_together = (('id', 'slug'),)
 
     def __str__(self):
@@ -41,6 +41,7 @@ class Products(models.Model):
             self.slug = slugify(unidecode(self.product_name))
         return super().save(*args, **kwargs)
 
+
 class Drink(models.Model):
     drink_name = models.CharField(max_length=50)
     slug = models.SlugField(unique='drink_name', blank=True)
@@ -50,7 +51,7 @@ class Drink(models.Model):
         verbose_name = 'Drink'
         verbose_name_plural = 'Drinks'
 
-    def save(self, *args, **kwargs):  # new
+    def save(self, *args, **kwargs):  # save slug from form
         if not self.slug:
             self.slug = slugify(unidecode(self.drink_name))
         return super().save(*args, **kwargs)
@@ -59,7 +60,7 @@ class Drink(models.Model):
         return reverse("cafecrm:drink_detail", kwargs={"slug": self.slug})
 
     def __str__(self):
-        return 'Order {}'.format(self.drink_name)
+        return 'Drink {}'.format(self.drink_name)
 
     @classmethod
     def get_or_none(cls, **kwargs):
@@ -68,6 +69,7 @@ class Drink(models.Model):
         except cls.DoesNotExist:
             return None
 
+
 class DrinkItem(models.Model):
     drink = models.ForeignKey(Drink, related_name='items', on_delete=models.CASCADE)
     product = models.ForeignKey(Products, related_name='drink_items', on_delete=models.PROTECT)
@@ -75,3 +77,28 @@ class DrinkItem(models.Model):
 
     def __str__(self):
         return '{}'.format(self.drink)
+
+
+class Document(models.Model):
+    RECEIPT = 'Receipt'
+    CONSUMPTION = 'Consumption'
+    DOCUMENT_TYPE = ((RECEIPT, 'Receipt'), (CONSUMPTION, 'Consumption'))
+
+    document_type = models.CharField(max_length=20, choices=DOCUMENT_TYPE, verbose_name='document type')
+    created = models.DateTimeField(auto_now_add=True)
+    description = models.TextField(blank=True)
+
+    class Meta:
+        ordering = ('-created',)
+
+    def __str__(self):
+        return 'Document {}'.format(self.id)
+
+
+class DocumentItem(models.Model):
+    document = models.ForeignKey(Document, related_name='items', on_delete=models.CASCADE)
+    product = models.ForeignKey(Products, related_name='document_items', on_delete=models.CASCADE)
+    quantity = models.PositiveSmallIntegerField(default=0)
+
+    def __str__(self):
+        return '{}'.format(self.id)

@@ -1,0 +1,50 @@
+{% extends 'cafecrm/base.html' %}
+{%  load static %}
+
+{% block title %}
+    {{ title }}
+{% endblock %}
+
+{% block content %}
+
+    {% if not sent %}
+         <h4>New Document</h4>
+        <!--form-->
+        <form action="" method="post" class="order-form">
+            {{ form.as_p }}
+
+            <!--items-->
+    <div class="order-info">
+        <h3>Items for {{ document_type }}: </h3>
+        <ul>
+            {% for item in doc %}
+                <li>
+                    {{ item.product.product_name }} -
+                    {{ item.quantity }} {{ item.product.unit }}
+                </li>
+            {% endfor %}
+        </ul>
+    <a href="{% url 'cafecrm:products' %}" class="button light">Add new product in {{ document_type }}</a>
+    <br>
+    <a href="{% url 'doc_temp:doc_detail' %}" class="button light">Change products quantity</a>
+    </div>
+                    <p><input type="submit" value="Add {{ document_type }}"></p>
+            {% csrf_token %}
+        </form>
+    {% else %}
+    <!--success-->
+         <h4>Document - {{ document.document_type }} # {{ document.id }} was applied at {{ document.created }}</h4>
+    <!--ingredients-->
+    <div class="order-info">
+        <h3>Items in document: </h3>
+        <ul>
+            {% for item in doc %}
+                <li>
+                    {{ item.product.product_name }} - {{ item.quantity }} {{ item.product.unit }}
+                </li>
+            {% endfor %}
+        </ul>
+        {{ document.description }}
+    </div>
+    {% endif %}
+{% endblock %}

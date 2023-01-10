@@ -28,4 +28,7 @@ def doc_remove(request, product_id):
 
 def doc_detail(request):
     doc = Doctemp(request)
+    for item in doc:
+        item['update_quantity_form'] = DoctempAddProductForm(initial={'quantity': item['quantity'],
+                                                                   'update': True})
     return render(request, 'doc_temp/detail.html', {'doc': doc})

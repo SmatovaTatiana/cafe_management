@@ -19,10 +19,14 @@
         <ul>
             {% for item in doc %}
                 <li>
-                    {{ item.product.product_name }} - {{ item.quantity }} {{ item.product.unit }}
+                    {{ item.product.product_name }} -
+                    {{ item.quantity }} {{ item.product.unit }}
                 </li>
             {% endfor %}
         </ul>
+    <a href="{% url 'cafecrm:products' %}" class="button light">Add new product in list</a>
+    <br>
+    <a href="{% url 'doc_temp:doc_detail' %}" class="button light">Change products quantity</a>
     </div>
                     <p><input type="submit" value="Add drink"></p>
             {% csrf_token %}

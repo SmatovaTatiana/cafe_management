@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm, modelformset_factory
-from .models import Products, Drink
+from .models import Products, Drink, Document
 
 
 # for simple form
@@ -27,3 +27,9 @@ class DrinkCreateForm(forms.ModelForm):
     class Meta:
         model = Drink
         fields = ['drink_name']
+
+
+class DocumentCreateForm(forms.ModelForm):
+    class Meta:
+        model = Document
+        fields = ['document_type', 'description']
