@@ -59,7 +59,7 @@ class Drink(models.Model):
         return reverse('cafecrm:drink_detail', args=[self.slug, ])
 
     def __str__(self):
-        return 'Drink {}'.format(self.drink_name)
+        return '{}'.format(self.drink_name)
 
     @classmethod
     def get_or_none(cls, **kwargs):

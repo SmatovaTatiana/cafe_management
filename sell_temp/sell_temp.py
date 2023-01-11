@@ -10,10 +10,10 @@ class Selltemp(object):
         Инициализируем временный документ
         """
         self.session = request.session
-        sell = self.session.get(settings.SELLTEMP_SESSION_ID)
+        sell = self.session.get(settings.DOCTEMP_SESSION_ID)
         if not sell:
             # save an empty doc in the session
-            sell = self.session[settings.SELLTEMP_SESSION_ID] = {}
+            sell = self.session[settings.DOCTEMP_SESSION_ID] = {}
         self.sell = sell
 
     def add(self, drink, quantity=1, update_quantity=False):
@@ -31,7 +31,7 @@ class Selltemp(object):
 
     def save(self):
         # Обновление сессии doc
-        self.session[settings.SELLTEMP_SESSION_ID] = self.sell
+        self.session[settings.DOCTEMP_SESSION_ID] = self.sell
         # Отметить сеанс как "измененный", чтобы убедиться, что он сохранен
         self.session.modified = True
 
@@ -72,5 +72,5 @@ class Selltemp(object):
 
     def clear(self):
         # удаление временного документа из сессии
-        del self.session[settings.SELLTEMP_SESSION_ID]
+        del self.session[settings.DOCTEMP_SESSION_ID]
         self.session.modified = True

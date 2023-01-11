@@ -65,7 +65,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'doc_temp.context_processors.doc',
-                'sell_temp.context_processors.sell',
+#               'sell_temp.context_processors_sell.sell',
             ],
         },
     },
@@ -123,4 +123,6 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 DOCTEMP_SESSION_ID = 'doc_temp'
-SELLTEMP_SESSION_ID = 'sell_temp'
+# SELLTEMP_SESSION_ID = 'sell_temp'
+
+# SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
