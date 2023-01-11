@@ -1,4 +1,3 @@
-import uuid
 from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
@@ -102,3 +101,23 @@ class DocumentItem(models.Model):
 
     def __str__(self):
         return '{}'.format(self.id)
+
+
+class Selling(models.Model):
+    date = models.DateField(auto_now_add=True)
+    comments = models.TextField(blank=True)
+
+    class Meta:
+        ordering = ('date',)
+
+    def __str__(self):
+        return 'Selling {}'.format(self.pk)
+
+
+class SellingItem(models.Model):
+    selling = models.ForeignKey(Selling, on_delete=models.CASCADE)
+    drink = models.ForeignKey(Drink, on_delete=models.CASCADE)
+    quantity = models.PositiveSmallIntegerField(default=0)
+
+    def __str__(self):
+        return '{}'.format(self.drink)

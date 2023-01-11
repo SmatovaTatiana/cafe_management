@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Products, Drink, DrinkItem, Document, DocumentItem
+from .models import Products, Drink, DrinkItem, Document, DocumentItem, Selling, SellingItem
 
 
 @admin.register(Products)
@@ -35,3 +35,16 @@ class DocumentAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Document, DocumentAdmin)
+
+
+class SellingItemInline(admin.TabularInline):
+    model = SellingItem
+    raw_id_fields = ['drink']
+
+
+class SellingAdmin(admin.ModelAdmin):
+    list_display = ['id', 'date', 'comments']
+    inlines = [SellingItemInline]
+
+
+admin.site.register(Selling, SellingAdmin)

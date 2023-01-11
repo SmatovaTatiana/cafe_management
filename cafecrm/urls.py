@@ -15,6 +15,7 @@ urlpatterns = [
     path('drink_create', views.drink_create, name='drink_create'),
     path('document_create', views.document_create, name='document_create'),
     path('drinks', views.drinks, name='drinks'),
+    path('selling_document_create', views.selling_document_create, name='selling_document_create'),
     path('<slug:slug>', views.drink_detail, name='drink_detail'),
     path('<slug:slug>', views.product_detail, name='product_detail'),
 

@@ -1,11 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
-from django.views.generic import TemplateView, DetailView
 from django.utils.text import slugify
-from .models import Products, DrinkItem, Drink, DocumentItem
-from .forms import AddProductForm, ProductsFormSet, DrinkCreateForm, DocumentCreateForm
+from .models import Products, DrinkItem, Drink, DocumentItem, SellingItem
+from .forms import AddProductForm, DrinkCreateForm, DocumentCreateForm, SellingDocumentCreateForm
 from doc_temp.doc_temp import Doctemp
 from doc_temp.forms import DoctempAddProductForm
+from sell_temp.forms import SellAddForm
+from sell_temp.sell_temp import Selltemp
 
 
 def index(request):
@@ -110,9 +111,11 @@ def drink_create(request):
 
 def drinks(request):
     drinks = Drink.objects.all().order_by('drink_name')
+    sell_drink_form = SellAddForm()
     context = {
         'title': 'Drinks',
         'drinks': drinks,
+        'sell_drink_form': sell_drink_form
     }
     return render(request,
                   'cafecrm/drinks.html', context)
@@ -166,3 +169,33 @@ def document_create(request):
         'title': 'Create document'
     }
     return render(request, 'cafecrm/create_document.html', context)
+
+
+def selling_document_create(request):
+    sell = Selltemp(request)
+    sent = False
+    selling = []
+    if request.method == 'POST':
+        form = SellingDocumentCreateForm(request.POST)
+        if form.is_valid():
+            selling = form.save()
+            sent = True
+            for item in sell:
+                SellingItem.objects.create(selling=selling,
+                                         drink=item['drink'],
+                                         quantity=item['quantity'])
+
+                # clear temp document
+            sell.clear()
+            selling = selling
+
+    else:
+        form = SellingDocumentCreateForm
+    context = {
+        'selling': selling,
+        'form': form,
+        'sell': sell,
+        'sent': sent,
+        'title': 'Create selling document'
+    }
+    return render(request, 'cafecrm/create_selling_document.html', context)

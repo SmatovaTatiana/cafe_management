@@ -22,6 +22,7 @@ from django.urls import path
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('doc_temp/', include('doc_temp.urls', namespace='doc_temp')),
+    path('sell_temp/', include('sell_temp.urls', namespace='sell_temp')),
     path('', include('cafecrm.urls', namespace='cafecrm')),
 ]
 # , namespace='cafecrm'

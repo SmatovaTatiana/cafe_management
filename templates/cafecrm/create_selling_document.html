@@ -1,0 +1,49 @@
+{% extends 'cafecrm/base.html' %}
+{%  load static %}
+
+{% block title %}
+    {{ title }}
+{% endblock %}
+
+{% block content %}
+
+    {% if not sent %}
+         <h4>New sell document</h4>
+        <!--form-->
+        <form action="" method="post" class="order-form">
+            {{ form.as_p }}
+
+            <!--items-->
+    <div class="order-info">
+        <ul>
+            {% for item in sell %}
+                <li>
+                    {{ item.drink.drink_name }} -
+                    {{ item.quantity }}
+                </li>
+            {% endfor %}
+        </ul>
+    <a href="{% url 'cafecrm:drinks' %}" class="button light">Add new drink in </a>
+    <br>
+    <a href="{% url 'sell_temp:sell_detail' %}" class="button light">Change drinks quantity</a>
+    </div>
+                    <p><input type="submit" value="Add "></p>
+            {% csrf_token %}
+        </form>
+    {% else %}
+    <!--success-->
+         <h4>sell document -  # {{ selling.id }} was applied at {{ selling.date }}</h4>
+    <!--ingredients-->
+    <div class="order-info">
+        <h3>Items in sell document: </h3>
+        <ul>
+            {% for item in sell %}
+                <li>
+                    {{ item.drink.drink_name }} - {{ item.quantity }}
+                </li>
+            {% endfor %}
+        </ul>
+        {{ selling.comments }}
+    </div>
+    {% endif %}
+{% endblock %}

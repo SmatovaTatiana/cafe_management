@@ -11,6 +11,12 @@
         {% if drinks %}
             {% for drink in drinks %}
                 <a href="{{ drink.get_absolute_url }}">{{ drink.drink_name }}</a>
+                <form action="{% url 'sell_temp:sell_add' drink.id %}" method="post">
+                {{ sell_drink_form }}
+                {% csrf_token %}
+                <input type="submit" value="Add to document">
+            </form>
+            <hr>
                 <hr>
             {% endfor %}
         {% else %}

@@ -1,0 +1,44 @@
+{% extends "cafecrm/base.html" %}
+{% load static %}
+{% block title %}
+    Temp document
+{% endblock %}
+{% block content %}
+    <h1>Your temp document</h1>
+    <table class="cart">
+        <thead>
+        <tr>
+
+            <th>Drink</th>
+            <th>Update Quantity</th>
+            <th>Remove</th>
+            <th>Quantity</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in sell %}
+            {% with drink=item.drink %}
+                <tr>
+                    <td> {{ drink.drink_name }}</td>
+                    <td> <form action="{% url 'sell_temp:sell_add' drink.id %}" method="post">
+                {{ item.update_quantity_form.quantity }}
+                {{ item.update_quantity_form.update }}
+                <input type="submit" value="Обновить">
+                {% csrf_token %}
+              </form></td>
+                    <td><a href="{% url "sell_temp:sell_remove" drink.id %}">Remove</a></td>
+                    <td class="num">{{ item.quantity }}</td>
+                </tr>
+            {% endwith %}
+        {% endfor %}
+        </tbody>
+    </table>
+<br>
+    <p>
+        <a href="{% url 'cafecrm:drinks' %}" class="button light">Back to menu list</a>
+        <br>
+            <br>
+        <a href="{% url 'cafecrm:selling_document_create' %}" class="button">Create selling document</a>
+    </p>
+{% endblock %}

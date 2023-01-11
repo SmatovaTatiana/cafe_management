@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm, modelformset_factory
-from .models import Products, Drink, Document
+from .models import Products, Drink, Document, Selling
 
 
 # for simple form
@@ -33,3 +33,9 @@ class DocumentCreateForm(forms.ModelForm):
     class Meta:
         model = Document
         fields = ['document_type', 'description']
+
+
+class SellingDocumentCreateForm(forms.ModelForm):
+    class Meta:
+        model = Selling
+        fields = ['comments']
