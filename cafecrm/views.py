@@ -138,6 +138,7 @@ def document_create(request):
     doc = Doctemp(request)
     sent = False
     document = []
+    objects = Products.objects.all()
     if request.method == 'POST':
         form = DocumentCreateForm(request.POST)
         if form.is_valid():
@@ -149,12 +150,15 @@ def document_create(request):
                                          quantity=item['quantity'])
                 # update product quantity in stock
                 if document.document_type == 'Receipt':
-                    objects = Products.objects.all()
                     for el in objects:
                         if el.product_name == str(item['product']):
                             el.stock += item['quantity']
                             el.save()
-
+                else:
+                    for el in objects:
+                        if el.product_name == str(item['product']):
+                            el.stock -= item['quantity']
+                            el.save()
                 # clear temp document
             doc.clear()
             document = document
