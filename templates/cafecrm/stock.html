@@ -1,0 +1,26 @@
+{% extends "cafecrm/base.html" %}
+{% load static %}
+{% block title %}
+    Stock
+{% endblock %}
+{% block content %}
+    <h3>Products in stock</h3>
+    <table class="cart">
+        <thead>
+        <tr>
+            <th  style="width: 102px;">Product</th>
+            <th>Quantity</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in products %}
+            <tr>
+                <td>
+                    {{ item.product_name }}
+                </td>
+                <td class="num">{{ item.stock }} {{ item.unit  }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

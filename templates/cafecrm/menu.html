@@ -1,0 +1,21 @@
+{% extends "cafecrm/base.html" %}
+{% load static %}
+{% block title %}
+    Products
+{% endblock %}
+{% block content %}
+    <div class="product-detail">
+    {% for el in menu %}
+        {{ el.drink_name }}
+        <ul>
+            {% for item in drink_items %}
+                {% if item.drink_id == el.id %}
+                <li>
+                    {{ item.product }} - {{ item.quantity }} {{ item.product.unit }}
+                </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    {% endfor %}
+        </div>
+{% endblock %}

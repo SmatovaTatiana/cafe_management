@@ -17,14 +17,10 @@
                 <input type="submit" value="Add to document">
             </form>
             <hr>
-                <hr>
             {% endfor %}
         {% else %}
             There are no drinks in menu.
         {% endif %}
-    <br><a href="{% url 'cafecrm:products' %}" class="button light">Add product for creating new drink</a>
-
-
 </div>
 
 {% endblock %}

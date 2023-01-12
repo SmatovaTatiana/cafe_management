@@ -203,3 +203,23 @@ def selling_document_create(request):
         'title': 'Create selling document'
     }
     return render(request, 'cafecrm/create_selling_document.html', context)
+
+
+def stock(request):
+    products = Products.objects.all().order_by('product_name')
+    return render(request,
+                  'cafecrm/stock.html',
+                  {'title': 'stock',
+                   'products': products
+                   })
+
+
+def menu(request):
+    menu = Drink.objects.all().order_by('drink_name')
+    drink_items = DrinkItem.objects.all()
+    context = {
+        'drink_items': drink_items,
+        'menu': menu
+    }
+    return render(request,
+                  'cafecrm/menu.html', context)
