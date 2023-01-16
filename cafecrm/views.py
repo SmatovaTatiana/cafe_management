@@ -139,6 +139,7 @@ def document_create(request):
     sent = False
     document = []
     objects = Products.objects.all()
+ #   message = ''
     if request.method == 'POST':
         form = DocumentCreateForm(request.POST)
         if form.is_valid():
@@ -149,16 +150,24 @@ def document_create(request):
                                          product=item['product'],
                                          quantity=item['quantity'])
                 # update product quantity in stock
-                if document.document_type == 'Receipt':
-                    for el in objects:
-                        if el.product_name == str(item['product']):
+                for el in objects:
+                    if el.product_name == str(item['product']):
+                        if document.document_type == 'Receipt':
                             el.stock += item['quantity']
                             el.save()
-                else:
-                    for el in objects:
-                        if el.product_name == str(item['product']):
-                            el.stock -= item['quantity']
-                            el.save()
+                        else:
+                            if el.stock < item['quantity']:
+                                message = 'Не хватает количества на складе'
+                                context = {
+                                    'message': message,
+                                    'product': el.product_name,
+                                    'quantity': int(item['quantity']),
+                                    'stock': el.stock
+                                }
+                                return render(request, 'cafecrm/create_document.html', context)
+                            else:
+                                el.stock -= item['quantity']
+                                el.save()
                 # clear temp document
             doc.clear()
             document = document
@@ -170,7 +179,7 @@ def document_create(request):
         'form': form,
         'doc': doc,
         'sent': sent,
-        'title': 'Create document'
+        'title': 'Create document',
     }
     return render(request, 'cafecrm/create_document.html', context)
 
