@@ -21,7 +21,11 @@ class Products(models.Model):
     slug = models.SlugField(max_length=200, db_index=True, unique='product_name')
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     stock = models.PositiveIntegerField(default=0)
+    min_stock = models.PositiveSmallIntegerField(default=0)
     description = models.TextField(blank=True)
+    need_to_order = property(
+        lambda self: (self.min_stock - self.stock if self.stock < self.min_stock else 0)
+    )
 
     class Meta:
         verbose_name = 'Product'

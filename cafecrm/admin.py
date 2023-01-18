@@ -4,7 +4,7 @@ from .models import Products, Drink, DrinkItem, Document, DocumentItem, Selling,
 
 @admin.register(Products)
 class ProductsAdmin(admin.ModelAdmin):
-    list_display = ['id', 'product_name', 'unit', 'product_type', 'price', 'stock', 'slug']
+    list_display = ['id', 'product_name', 'unit', 'product_type', 'price', 'stock', 'min_stock', 'need_to_order']
     prepopulated_fields = {'slug': ('product_name', )}
     ordering = ['product_type']
 

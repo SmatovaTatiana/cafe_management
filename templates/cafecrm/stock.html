@@ -4,21 +4,23 @@
     Stock
 {% endblock %}
 {% block content %}
-    <h3>Products in stock</h3>
+    <h3>Остатки товара</h3>
     <table class="cart">
         <thead>
         <tr>
-            <th  style="width: 102px;">Product</th>
-            <th>Quantity</th>
+            <th  style="width: 102px;">Продукт</th>
+            <th style="width: 102px;">Количество</th>
+            <th style="width: 102px;">Мин. количество</th>
+            <th style="width: 102px;">Необходимо докупить</th>
         </tr>
         </thead>
         <tbody>
         {% for item in products %}
             <tr>
-                <td>
-                    {{ item.product_name }}
-                </td>
+                <td> {{ item.product_name }} </td>
                 <td class="num">{{ item.stock }} {{ item.unit  }}</td>
+                <td>{{ item.min_stock }} {{ item.unit  }}</td>
+            <td>{{ item.need_to_order }} {{ item.unit  }}</td>
             </tr>
         {% endfor %}
         </tbody>
