@@ -1,8 +1,12 @@
 {% extends "cafecrm/base.html" %}
+
 {% load static %}
 {% block title %}
     Products
 {% endblock %}
+
+{% include 'cafecrm/home.html' %}
+
 {% block content %}
     <div class="product-detail">
     {% for el in menu %}

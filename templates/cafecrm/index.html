@@ -1,12 +1,11 @@
-{% extends 'cafecrm/base.html' %}
+
 {%  load static %}
 
-{% block title %}
-    {{ title }}
-{% endblock %}
-
-
-
 {% block content %}
-Home page
+
+        <form action="." method="post">
+            {{ form.as_p }}
+            {% csrf_token %}
+            <input type="submit" value="Login">
+        </form>
 {% endblock %}

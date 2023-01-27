@@ -14,17 +14,20 @@
     <link rel="stylesheet" href="{% static 'cafecrm/css/style.css' %}" type="text/css">
 
 </head>
+
 <body>
-	<div class="wrapper">
-		<nav class="navbar navbar-expand-lg bg-body-tertiary" style="background-color: #e3f2fd;">
-			<a class="navbar-brand" href="{% url 'cafecrm:index' %}"><h2>CAFE</h2></a>
+
+    {% if user.is_superuser %}
+    	<nav class="navbar navbar-expand-lg bg-body-tertiary" style="background-color: #e3f2fd;">
+			<a class="navbar-brand" href="{% url 'cafecrm:home' %}"><h3>{{ user.first_name }}</h3></a>
+            <a href="{% url 'cafecrm:logout' %}">Logout</a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 		    <span class="navbar-toggler-icon"></span>
 		  	</button>
 		  	<div class="collapse navbar-collapse" id="navbarSupportedContent">
 		  		<ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
-                        <a class="nav-link" href="{% url 'cafecrm:index' %}">Home</a>
+                        <a class="nav-link" href="{% url 'cafecrm:home' %}">Home</a>
                     </li>
                     <li class="nav-item active">
 			        		<a class="nav-link" href="{% url 'cafecrm:stock' %}">Stock</a>
@@ -46,15 +49,60 @@
                     <li class="nav-item active">
                         <a class="nav-link" href="admin/">Admin panel</a>
                     </li>
+                    <li><div class="cart">
+    {% with total_items=doc|length %}
+        {% if doc|length > 0 %}
+            Your document:
+            <a href="{% url "doc_temp:doc_detail" %}">
+                {{ total_items }} item{{ total_items|pluralize }}
+            </a>
+        {% else %}
+            Your document is empty.
+        {% endif %}
+    {% endwith %}
+</div></li>
+                <li class="nav-item active">{{ user.username }}</li>
 		  		</ul>
 		  	</div>
 		</nav>
-        <div id="content" class="container">
+    {% else %}
+        <nav class="navbar navbar-expand-lg bg-body-tertiary" style="background-color: #e3f2fd;">
+			<a class="navbar-brand" href="{% url 'cafecrm:home' %}"><h3>{{ user.first_name }}</h3></a>
+			<a href="{% url 'cafecrm:logout' %}">Выйти</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+		    <span class="navbar-toggler-icon"></span>
+		  	</button>
+		  	<div class="collapse navbar-collapse" id="navbarSupportedContent">
+		  		<ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{% url 'cafecrm:home' %}">Home</a>
+                    </li>
+                    <li class="nav-item active">
+			        		<a class="nav-link" href="{% url 'cafecrm:menu' %}">Menu</a>
+                    </li>
+                    <li><a class="dropdown-item" href="{% url 'cafecrm:drinks' %}">Add new selling</a></li>
 
-			{% block content %}
 
-			{% endblock %}
-		</div>
-    </div>
+
+                    <li><div class="cart">
+    {% with total_items=doc|length %}
+        {% if doc|length > 0 %}
+            Your document:
+            <a href="{% url "doc_temp:doc_detail" %}">
+                {{ total_items }} item{{ total_items|pluralize }}
+            </a>
+        {% else %}
+            Your document is empty.
+        {% endif %}
+    {% endwith %}
+</div></li>
+		  		</ul>
+		  	</div>
+		</nav>
+    {% endif %}
+
+{% block content %}
+{% endblock %}
+
 </body>
 </html>

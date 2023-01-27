@@ -1,16 +1,43 @@
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import LogoutView
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.utils.text import slugify
+
+from . import forms
 from .models import Products, DrinkItem, Drink, DocumentItem, SellingItem
 from .forms import AddProductForm, DrinkCreateForm, DocumentCreateForm, SellingDocumentCreateForm
 from doc_temp.doc_temp import Doctemp
 from doc_temp.forms import DoctempAddProductForm
 from sell_temp.forms import SellAddForm
 from sell_temp.sell_temp import Selltemp
+from django.contrib.auth import authenticate
+from django.contrib.auth import login
+from django.http import HttpResponse
 
 
 def index(request):
-    return render(request, 'cafecrm/index.html', {'title': 'Home'})
+    if request.method == "POST":
+        form = forms.LoginForm(request.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+            user = authenticate(
+                username=cd['username'],
+                password=cd['password'],
+                )
+            if user is not None:
+                if user.is_active:
+                    login(request, user)
+                    return render(request,
+                  'cafecrm/home.html',
+                  )
+                else:
+                    return HttpResponse('User not active')
+            else:
+                return HttpResponse('Bad credentials')
+    else:
+        form = forms.LoginForm()
+    return render(request, 'cafecrm/index.html', {'title': 'Home', 'form': form})
 
 
 def products(request):
@@ -232,3 +259,12 @@ def menu(request):
     }
     return render(request,
                   'cafecrm/menu.html', context)
+
+
+def home(request):
+    return render(request, 'cafecrm/home.html', {'title': login})
+
+
+class Logout(LogoutView):
+    next_page = reverse_lazy('cafecrm/index.html')
+

@@ -3,6 +3,12 @@ from django.forms import ModelForm, modelformset_factory
 from .models import Products, Drink, Document, Selling
 
 
+
+class LoginForm(forms.Form):
+    username = forms.CharField()
+    password = forms.CharField(widget=forms.PasswordInput)
+
+
 # for simple form
 class AddProductForm(ModelForm):
     class Meta:
