@@ -24,13 +24,13 @@ def index(request):
             user = authenticate(
                 username=cd['username'],
                 password=cd['password'],
-                )
+            )
             if user is not None:
                 if user.is_active:
                     login(request, user)
                     return render(request,
-                  'cafecrm/home.html',
-                  )
+                                  'cafecrm/home.html',
+                                  )
                 else:
                     return HttpResponse('User not active')
             else:
@@ -150,7 +150,7 @@ def drinks(request):
 
 def drink_detail(request, slug):
     drink = get_object_or_404(Drink,
-                                slug=slug
+                              slug=slug
                               )
     drink_items = DrinkItem.objects.filter(drink_id=drink.pk)
     context = {
@@ -166,16 +166,17 @@ def document_create(request):
     sent = False
     document = []
     objects = Products.objects.all()
- #   message = ''
+    #   message = ''
     if request.method == 'POST':
         form = DocumentCreateForm(request.POST)
         if form.is_valid():
+            form.instance.created_by = request.user
             document = form.save()
             sent = True
             for item in doc:
                 DocumentItem.objects.create(document=document,
-                                         product=item['product'],
-                                         quantity=item['quantity'])
+                                            product=item['product'],
+                                            quantity=item['quantity'])
                 # update product quantity in stock
                 for el in objects:
                     if el.product_name == str(item['product']):
@@ -211,6 +212,7 @@ def document_create(request):
     return render(request, 'cafecrm/create_document.html', context)
 
 
+@login_required()
 def selling_document_create(request):
     sell = Selltemp(request)
     sent = False
@@ -218,12 +220,14 @@ def selling_document_create(request):
     if request.method == 'POST':
         form = SellingDocumentCreateForm(request.POST)
         if form.is_valid():
+            form.instance.created_by = request.user
             selling = form.save()
             sent = True
             for item in sell:
                 SellingItem.objects.create(selling=selling,
-                                         drink=item['drink'],
-                                         quantity=item['quantity'])
+                                           drink=item['drink'],
+                                           quantity=item['quantity'],
+                                           )
 
                 # clear temp document
             sell.clear()
@@ -236,7 +240,7 @@ def selling_document_create(request):
         'form': form,
         'sell': sell,
         'sent': sent,
-        'title': 'Create selling document'
+        'title': 'Create selling document',
     }
     return render(request, 'cafecrm/create_selling_document.html', context)
 
@@ -267,4 +271,3 @@ def home(request):
 
 class Logout(LogoutView):
     next_page = reverse_lazy('cafecrm/index.html')
-
