@@ -7,22 +7,12 @@
 
 {% block content %}
 <div class="item">
-    {% if products %}
-        {% for product in products %}
-            <a href="{{ product.get_absolute_url }}">{{ product.product_name }}</a> - in stock {{ product.stock }}
-            <form action="{% url 'doc_temp:doc_add' product.id %}" method="post">
+            <form action="{% url 'doc_temp:doc_add'  %}" method="post">
                 {{ doc_product_form }}
                 {% csrf_token %}
                 <input type="submit" value="Add to document">
             </form>
-            <hr>
-        {% if sent %}
-            {{ message }}
-        {% endif %}
-        {% endfor %}
-        {% else %}
-            В базе нет продуктов
-        {% endif %}
+
 </div>
 
 {% endblock %}

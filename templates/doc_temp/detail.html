@@ -9,7 +9,7 @@
         <thead>
         <tr>
             <th>Product</th>
-            <th>Update Quantity</th>
+            <th>Quantity</th>
             <th>Remove</th>
             <th>Quantity</th>
         </tr>
@@ -23,7 +23,7 @@
                             {{ product.product_name }}
                         </a>
                     </td>
-                    <td> <form action="{% url 'doc_temp:doc_add' product.id %}" method="post">
+                    <td> <form action="{% url "doc_temp:doc_add" product.id %}" method="post">
                 {{ item.update_quantity_form.quantity }}
                 {{ item.update_quantity_form.update }}
                 <input type="submit" value="Обновить">
