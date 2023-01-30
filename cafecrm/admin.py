@@ -16,7 +16,7 @@ class DrinkItemInline(admin.TabularInline):
 
 
 class DrinkAdmin(admin.ModelAdmin):
-    list_display = ['id', 'drink_name']
+    list_display = ['id', 'drink_name', 'menu_type']
     prepopulated_fields = {'slug': ('drink_name', )}
     inlines = [DrinkItemInline]
 

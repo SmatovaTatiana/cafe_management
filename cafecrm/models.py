@@ -59,8 +59,15 @@ class Products(models.Model):
 
 
 class Drink(models.Model):
+    DRINK = 'drink'
+    SNACK = 'snack'
+    MENU_TYPE = ((DRINK, 'напиток'), (SNACK, 'штучный товар'))
+
     drink_name = models.CharField(max_length=50, verbose_name='Название напитка')
     slug = models.SlugField(unique='drink_name', blank=True)
+    menu_type = models.CharField(max_length=20,
+                                    choices=MENU_TYPE,
+                                    verbose_name='Категория')
 
     class Meta:
         ordering = ('drink_name',)

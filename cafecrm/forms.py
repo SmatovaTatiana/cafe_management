@@ -32,7 +32,7 @@ ProductsFormSet = modelformset_factory(
 class DrinkCreateForm(forms.ModelForm):
     class Meta:
         model = Drink
-        fields = ['drink_name']
+        fields = ['drink_name', 'menu_type']
 
 
 class DocumentCreateForm(forms.ModelForm):
