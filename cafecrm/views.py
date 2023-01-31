@@ -84,27 +84,6 @@ def add_simple_product(request):
     return render(request, 'cafecrm/add_simple_product.html', context)
 
 
-'''# View for adding product multiply form
-class ProductAddView(TemplateView):
-    template_name = "cafecrm/product_add.html"
-
-    # Define method to handle GET request
-    def get(self, *args, **kwargs):
-        formset = ProductsFormSet(queryset=Products.objects.none())
-        return self.render_to_response({'product_formset': formset})
-
-    # Define method to handle POST request
-    def post(self, *args, **kwargs):
-        formset = ProductsFormSet(data=self.request.POST)
-        if formset.is_valid():
-            product_name = formset.cleaned_data.get('product_name')
-            slug = slugify(product_name)
-            formset.save()
-            return redirect(reverse_lazy('cafecrm:products'))
-
-        return self.render_to_response({'product_formset': formset})'''
-
-
 def drink_create(request):
     doc = Doctemp(request)
     sent = False
@@ -166,7 +145,6 @@ def document_create(request):
     sent = False
     document = []
     objects = Products.objects.all()
-    #   message = ''
     if request.method == 'POST':
         form = DocumentCreateForm(request.POST)
         if form.is_valid():
@@ -217,6 +195,7 @@ def selling_document_create(request):
     sell = Selltemp(request)
     sent = False
     selling = []
+
     if request.method == 'POST':
         form = SellingDocumentCreateForm(request.POST)
         if form.is_valid():
@@ -228,7 +207,22 @@ def selling_document_create(request):
                                            drink=item['drink'],
                                            quantity=item['quantity'],
                                            )
-
+                prodano = DrinkItem.objects.filter(drink=item['drink'])
+                for el in prodano:
+                    aga = Products.objects.filter(id=el.product_id)
+                    for a in aga:
+                        if a.stock < (el.quantity * item['quantity']):
+                            message = 'Не хватает количества на складе'
+                            context = {
+                                'message': message,
+                                'product': el.product,
+                                'quantity': int(el.quantity * item['quantity']),
+                                'stock': a.stock
+                            }
+                            return render(request, 'cafecrm/create_selling_document.html', context)
+                        else:
+                            a.stock = int(a.stock - (el.quantity * item['quantity']))
+                            a.save()
                 # clear temp document
             sell.clear()
             selling = selling

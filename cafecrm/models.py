@@ -16,26 +16,14 @@ class Products(models.Model):
     GR = 'гр'
     UNITS = ((PC, 'шт.'), (ML, 'мл'), (GR, 'гр'))
 
-    product_name = models.CharField(max_length=250,
-                                    verbose_name='Наименование')
-    unit = models.CharField(max_length=20, choices=UNITS,
-                            verbose_name='Единица измерения')
-    product_type = models.CharField(max_length=20,
-                                    choices=PRODUCT_TYPE,
-                                    verbose_name='Категория')
-    slug = models.SlugField(max_length=200,
-                            db_index=True,
-                            unique='product_name')
-    price = models.DecimalField(max_digits=10,
-                                decimal_places=2,
-                                default=0.00,
-                                verbose_name='Цена')
-    stock = models.PositiveIntegerField(default=0,
-                                        verbose_name='Остаток')
-    min_stock = models.PositiveSmallIntegerField(default=0,
-                                                 verbose_name='Минимальный остаток')
-    description = models.TextField(blank=True,
-                                   verbose_name='Описание')
+    product_name = models.CharField(max_length=250, verbose_name='Наименование')
+    unit = models.CharField(max_length=20, choices=UNITS, verbose_name='Единица измерения')
+    product_type = models.CharField(max_length=20, choices=PRODUCT_TYPE, verbose_name='Категория')
+    slug = models.SlugField(max_length=200, db_index=True, unique='product_name')
+    price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00, verbose_name='Цена')
+    stock = models.PositiveIntegerField(default=0, verbose_name='Остаток')
+    min_stock = models.PositiveSmallIntegerField(default=0, verbose_name='Минимальный остаток')
+    description = models.TextField(blank=True, verbose_name='Описание')
     need_to_order = property(
         lambda self: (self.min_stock - self.stock if self.stock < self.min_stock else 0)
         )
@@ -65,9 +53,7 @@ class Drink(models.Model):
 
     drink_name = models.CharField(max_length=50, verbose_name='Название напитка')
     slug = models.SlugField(unique='drink_name', blank=True)
-    menu_type = models.CharField(max_length=20,
-                                    choices=MENU_TYPE,
-                                    verbose_name='Категория')
+    menu_type = models.CharField(max_length=20, choices=MENU_TYPE, verbose_name='Категория')
 
     class Meta:
         ordering = ('drink_name',)
@@ -131,7 +117,7 @@ class DocumentItem(models.Model):
 class Selling(models.Model):
     date = models.DateTimeField(auto_now_add=True, verbose_name='Дата')
     comments = models.TextField(blank=True, verbose_name='Комментарий')
-    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null= True, verbose_name='Исполнитель')
+    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, verbose_name='Исполнитель')
 
     class Meta:
         ordering = ('date',)
