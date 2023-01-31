@@ -12,7 +12,6 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('home', views.home, name='home'),
     path('logout/', auth_views.LogoutView.as_view(next_page='cafecrm:index'), name='logout'),
-   # path('product_add', ProductAddView.as_view(), name='product_add'),  # for multiply form
     path('add_simple_product', views.add_simple_product, name='add_simple_product'),
     path('stock', views.stock, name='stock'),
     path('menu', views.menu, name='menu'),

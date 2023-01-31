@@ -8,14 +8,14 @@
 {% block content %}
 
     {% if not sent %}
-         <h4>New Drink</h4>
+         <h4>Чтобы создать новый товар в меню, введите следующие данные:</h4>
         <!--form-->
         <form action="" method="post" class="order-form">
             {{ form.as_p }}
 
             <!--ingredients-->
     <div class="order-info">
-        <h3>Your drink parts: </h3>
+        <h4>Новый пункт меню состоит из: </h4>
         <ul>
             {% for item in doc %}
                 <li>
@@ -24,19 +24,19 @@
                 </li>
             {% endfor %}
         </ul>
-    <a href="{% url 'cafecrm:products' %}" class="button light">Add new product in list</a>
+    <a href="{% url 'cafecrm:products' %}" class="button light">Добавить еще товар</a>
     <br>
-    <a href="{% url 'doc_temp:doc_detail' %}" class="button light">Change products quantity</a>
+    <a href="{% url 'doc_temp:doc_detail' %}" class="button light">Изменить количество</a>
     </div>
-                    <p><input type="submit" value="Add drink"></p>
+                    <p><input type="submit" value="Создать"></p>
             {% csrf_token %}
         </form>
     {% else %}
     <!--success-->
-         <h4>Drink - {{ drink_name }} - was added to menu</h4>
+         <h4>Новый товар - {{ drink_name }} - был добавлен в меню</h4>
     <!--ingredients-->
     <div class="order-info">
-        <h3>Your drink parts: </h3>
+        <h3>В него входит: </h3>
         <ul>
             {% for item in doc %}
                 <li>

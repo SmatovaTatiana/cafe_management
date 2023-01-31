@@ -4,14 +4,14 @@
     Temp document
 {% endblock %}
 {% block content %}
-    <h1>Your temp document</h1>
+
     <table class="cart">
         <thead>
         <tr>
-            <th>Product</th>
-            <th>Quantity</th>
-            <th>Remove</th>
-            <th>Quantity</th>
+            <th>Товар</th>
+            <th>Количество</th>
+            <th>Удалить</th>
+            <th>Итого количество</th>
         </tr>
         </thead>
         <tbody>
@@ -29,7 +29,7 @@
                 <input type="submit" value="Обновить">
                 {% csrf_token %}
               </form></td>
-                    <td><a href="{% url "doc_temp:doc_remove" product.id %}">Remove</a></td>
+                    <td><a href="{% url "doc_temp:doc_remove" product.id %}">Удалить</a></td>
                     <td class="num">{{ item.quantity }}</td>
                 </tr>
             {% endwith %}
@@ -38,10 +38,10 @@
     </table>
 <br>
     <p>
-        <a href="{% url 'cafecrm:products' %}" class="button light">Back to product list</a>
+        <a href="{% url 'cafecrm:products' %}" class="button light">Вернуться к выбору товара</a>
         <br>
-        <a href="{% url 'cafecrm:drink_create' %}" class="button">Create new drink</a>
+        <a href="{% url 'cafecrm:drink_create' %}" class="button">Создать напиток</a>
         <br>
-        <a href="{% url 'cafecrm:document_create' %}" class="button">Create stock document</a>
+        <a href="{% url 'cafecrm:document_create' %}" class="button">Создать складской документ</a>
     </p>
 {% endblock %}

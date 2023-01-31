@@ -158,17 +158,19 @@ def document_create(request):
                 # update product quantity in stock
                 for el in objects:
                     if el.product_name == str(item['product']):
-                        if document.document_type == 'Receipt':
+                        if document.document_type == 'Приход':
                             el.stock += item['quantity']
                             el.save()
                         else:
                             if el.stock < item['quantity']:
                                 message = 'Не хватает количества на складе'
+                                deficit = item['quantity'] - el.stock
                                 context = {
                                     'message': message,
                                     'product': el.product_name,
                                     'quantity': int(item['quantity']),
-                                    'stock': el.stock
+                                    'stock': el.stock,
+                                    'deficit': deficit
                                 }
                                 return render(request, 'cafecrm/create_document.html', context)
                             else:
@@ -213,11 +215,13 @@ def selling_document_create(request):
                     for a in aga:
                         if a.stock < (el.quantity * item['quantity']):
                             message = 'Не хватает количества на складе'
+                            deficit = item['quantity'] - a.stock
                             context = {
                                 'message': message,
                                 'product': el.product,
                                 'quantity': int(el.quantity * item['quantity']),
-                                'stock': a.stock
+                                'stock': a.stock,
+                                'deficit': deficit,
                             }
                             return render(request, 'cafecrm/create_selling_document.html', context)
                         else:
@@ -240,20 +244,26 @@ def selling_document_create(request):
 
 
 def stock(request):
-    products = Products.objects.all().order_by('product_name')
+    products = Products.objects.filter(product_type='product').order_by('product_name')
+    snacks = Products.objects.filter(product_type='snack').order_by('product_name')
+    tares = Products.objects.filter(product_type='tare').order_by('product_name')
     return render(request,
                   'cafecrm/stock.html',
                   {'title': 'stock',
-                   'products': products
+                   'products': products,
+                   'snacks': snacks,
+                   'tares': tares
                    })
 
 
 def menu(request):
-    menu = Drink.objects.all().order_by('drink_name')
+    menu_drinks = Drink.objects.filter(menu_type='drink').order_by('drink_name')
+    menu_snack = Drink.objects.filter(menu_type='snack').order_by('drink_name')
     drink_items = DrinkItem.objects.all()
     context = {
         'drink_items': drink_items,
-        'menu': menu
+        'menu_drinks': menu_drinks,
+        'menu_snack': menu_snack,
     }
     return render(request,
                   'cafecrm/menu.html', context)

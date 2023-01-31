@@ -4,15 +4,14 @@
     Temp document
 {% endblock %}
 {% block content %}
-    <h1>Your temp document</h1>
     <table class="temp_doc">
         <thead>
         <tr>
 
-            <th>Drink</th>
-            <th>Update </th>
-            <th>Remove</th>
-            <th>Quantity</th>
+            <th>Товар</th>
+            <th>Количество</th>
+            <th>Удалить</th>
+            <th>Итого количество</th>
 
         </tr>
         </thead>
@@ -27,7 +26,7 @@
                 <input type="submit" value="Обновить">
                 {% csrf_token %}
               </form></td>
-                    <td><a href="{% url "sell_temp:sell_remove" drink.id %}">Remove</a></td>
+                    <td><a href="{% url "sell_temp:sell_remove" drink.id %}">Удалить</a></td>
                     <td class="num">{{ item.quantity }}</td>
                 </tr>
             {% endwith %}
@@ -36,9 +35,9 @@
     </table>
 <br>
     <p>
-        <a href="{% url 'cafecrm:drinks' %}" class="button light">Back to menu list</a>
+        <a href="{% url 'cafecrm:drinks' %}" class="button light">Вернуться к выбору товара</a>
         <br>
             <br>
-        <a href="{% url 'cafecrm:selling_document_create' %}" class="button">Create selling document</a>
+        <a href="{% url 'cafecrm:selling_document_create' %}" class="button">Создать документ продажи</a>
     </p>
 {% endblock %}

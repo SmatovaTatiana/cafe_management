@@ -4,14 +4,16 @@
     Stock
 {% endblock %}
 {% block content %}
-    <h3>Остатки товара</h3>
+<div class="row align-items-start"">
+    <b>Продукты</b>
+    <hr>
     <table class="cart">
         <thead>
         <tr>
-            <th  style="width: 102px;">Продукт</th>
-            <th style="width: 102px;">Количество</th>
-            <th style="width: 102px;">Мин. количество</th>
-            <th style="width: 102px;">Необходимо докупить</th>
+            <th>Наименование</th>
+            <th>Наличие</th>
+            <th>Мин. необходимый остаток</th>
+            <th>Необходимо докупить</th>
         </tr>
         </thead>
         <tbody>
@@ -25,4 +27,53 @@
         {% endfor %}
         </tbody>
     </table>
+    <hr>
+    <b>Штучный товар</b>
+    <hr>
+    <table class="cart">
+        <thead>
+        <tr>
+            <th>Наименование</th>
+            <th>Наличие</th>
+            <th>Мин. необходимый остаток</th>
+            <th>Необходимо докупить</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in snacks %}
+            <tr>
+                <td> {{ item.product_name }} </td>
+                <td class="num">{{ item.stock }} {{ item.unit  }}</td>
+                <td>{{ item.min_stock }} {{ item.unit  }}</td>
+            <td>{{ item.need_to_order }} {{ item.unit  }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <hr>
+    <b>Тара</b>
+    <hr>
+    <table class="cart">
+        <thead>
+        <tr>
+            <th>Наименование</th>
+            <th>Наличие</th>
+            <th>Мин. необходимый остаток</th>
+            <th>Необходимо докупить</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in tares %}
+            <tr>
+                <td> {{ item.product_name }} </td>
+                <td class="num">{{ item.stock }} {{ item.unit  }}</td>
+                <td>{{ item.min_stock }} {{ item.unit  }}</td>
+            <td>{{ item.need_to_order }} {{ item.unit  }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <hr>
+
+</div>
 {% endblock %}

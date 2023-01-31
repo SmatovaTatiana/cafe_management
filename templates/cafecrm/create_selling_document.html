@@ -11,12 +11,13 @@
             {% if message %}
                 {{ product }} {{ message }}.
                 <br>
-                 In document {{ quantity }}, but in sock {{ stock }}
+                 В документе -  {{ quantity }}, доступный остаток - {{ stock }}
+                <br> Не хватает {{ deficit }}
                 <br>
-                <a href="{% url 'sell_temp:sell_detail' %}" class="button light">Change products quantity</a>
+                <a href="{% url 'sell_temp:sell_detail' %}" class="button light">Изменить количество товара</a>
             {% else %}
 
-                <h4>New sell document</h4>
+                <h4>Новый документ</h4>
                 <!--form-->
                 <form action="" method="post" class="order-form">
                     {{ form.as_p }}
@@ -31,20 +32,20 @@
                             </li>
                         {% endfor %}
                     </ul>
-                    <a href="{% url 'cafecrm:drinks' %}" class="button light">Add new drink in </a>
+                    <a href="{% url 'cafecrm:drinks' %}" class="button light">Добавить товар </a>
                     <br>
-                    <a href="{% url 'sell_temp:sell_detail' %}" class="button light">Change drinks quantity</a>
+                    <a href="{% url 'sell_temp:sell_detail' %}" class="button light">Изменить количество товара</a>
                     </div>
-                                <p><input type="submit" value="Add "></p>
+                                <p><input type="submit" value="Создать "></p>
                         {% csrf_token %}
                     </form>
                 {% endif %}
         {% else %}
     <!--success-->
-         <h4>sell document -  # {{ selling.id }} was applied at {{ selling.date }}</h4>
+         <h4>Документ продажи № {{ selling.id }} был создан {{ selling.date }}</h4>
     <!--ingredients-->
     <div class="order-info">
-        <h3>Items in sell document: </h3>
+        <h3>Товары в документе: </h3>
         <ul>
             {% for item in sell %}
                 <li>
@@ -52,6 +53,7 @@
                 </li>
             {% endfor %}
         </ul>
+    Комментарий:
         {{ selling.comments }}
         {{ selling.author }}
     </div>

@@ -9,25 +9,25 @@
  <div class="send-message col-6 d-flex justify-content-center" >
         {% if not sent %} <!--добавляем флаг (добавлено во вьюшку) если не было отправлено, открываем форму-->
             <form method="post">
-            <div><p>Add a new product</p></div>
+            <div><p>Чтобы создать новый товар, введите следующие данные:</p></div>
             {% csrf_token %}
             <div class="form-group">
-                Select product type: {{ form.product_type }}
+                Выбрать тип товара: {{ form.product_type }}
             </div>
             <div class="form-group">
-                Input product name: {{ form.product_name }}
+                Ввести название товара: {{ form.product_name }}
             </div>
             <div class="form-group">
-                Input product unit:{{ form.unit }}
+                Ввести единицу измерения:{{ form.unit }}
             </div>
 
             <div class="form-group">
-                <input type="submit" class="btn btn-primary btn-send-message" value="Add product">
+                <input type="submit" class="btn btn-primary btn-send-message" value="Добавить товар">
             </div>
             <span>{{ error }}</span>
         </form>
         {% else %}  <!--если отправлено-->
-            <br> Product added.
+            <br> Товар успешно добавлен.
         {% endif %}
     </div>
 {% endblock %}

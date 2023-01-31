@@ -5,11 +5,14 @@
     Products
 {% endblock %}
 
-{% include 'cafecrm/home.html' %}
+
 
 {% block content %}
-    <div class="product-detail">
-    {% for el in menu %}
+     <div class="row justify-content-center">
+    <div class="col-4">
+    <b>Напитки</b>
+    <hr>
+      {% for el in menu_drinks %}
         {{ el.drink_name }}
         <ul>
             {% for item in drink_items %}
@@ -21,5 +24,15 @@
             {% endfor %}
         </ul>
     {% endfor %}
-        </div>
+    </div>
+    <div class="col-4">
+      <b>Снеки</b>
+    <hr>
+    {% for sn in menu_snack %}
+        {{ sn.drink_name }}
+        <br>
+    {% endfor %}
+    </div>
+  </div>
+
 {% endblock %}

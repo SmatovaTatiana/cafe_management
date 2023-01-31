@@ -11,18 +11,19 @@
         {% if message %}
             {{ product }} {{ message }}.
             <br>
-             In document {{ quantity }}, but in sock {{ stock }}
+             В документе - {{ quantity }}, доступный остаток - {{ stock }}
+            <br> Не хватает {{ deficit }}
             <br>
-            <a href="{% url 'doc_temp:doc_detail' %}" class="button light">Change products quantity</a>
+            <a href="{% url 'doc_temp:doc_detail' %}" class="button light">Изменить количество товара</a>
         {% else %}
 
-         <h4>New Document</h4>
+         <h4>Новый документ</h4>
         <!--form-->
         <form action="" method="post" class="order-form">
             {{ form.as_p }}
             <!--items-->
         <div class="order-info">
-        <h3>Items for {{ document_type }}: </h3>
+        <h3>Товар в  {{ document_type }}: </h3>
         <ul>
             {% for item in doc %}
                 <li>
@@ -31,22 +32,22 @@
             {% endfor %}
         </ul>
 
-    <a href="{% url 'cafecrm:products' %}" class="button light">Add new product in {{ document_type }}</a>
+    <a href="{% url 'cafecrm:products' %}" class="button light">Добавить товар в {{ document_type }}</a>
     <br>
 
-    <a href="{% url 'doc_temp:doc_detail' %}" class="button light">Change products quantity</a>
+    <a href="{% url 'doc_temp:doc_detail' %}" class="button light">Изменить количество товара</a>
     </div>
-                    <p><input type="submit" value="Add {{ document_type }}"></p>
+                    <p><input type="submit" value="Создать {{ document_type }}"></p>
             {% csrf_token %}
         </form>
             {% endif %}
     {% else %}
 
         <!--success-->
-         <h4>Document - {{ document.document_type }} # {{ document.id }} was applied at {{ document.created }}</h4>
+         <h4>Документ - {{ document.document_type }} № {{ document.id }} был создан {{ document.created }}</h4>
     <!--ingredients-->
     <div class="order-info">
-        <h3>Items in document: </h3>
+        <h4>Товары в документе: </h4>
         <ul>
             {% for item in doc %}
                 <li>

@@ -5,6 +5,7 @@ from django.utils.text import slugify
 from unidecode import unidecode
 
 
+# Продукты, товары
 class Products(models.Model):
     PRODUCT = 'product'
     SNACK = 'snack'
@@ -51,7 +52,7 @@ class Drink(models.Model):
     SNACK = 'snack'
     MENU_TYPE = ((DRINK, 'напиток'), (SNACK, 'штучный товар'))
 
-    drink_name = models.CharField(max_length=50, verbose_name='Название напитка')
+    drink_name = models.CharField(max_length=50, verbose_name='Название')
     slug = models.SlugField(unique='drink_name', blank=True)
     menu_type = models.CharField(max_length=20, choices=MENU_TYPE, verbose_name='Категория')
 
@@ -80,7 +81,7 @@ class Drink(models.Model):
 
 
 class DrinkItem(models.Model):
-    drink = models.ForeignKey(Drink, related_name='items', on_delete=models.CASCADE, verbose_name='Название напитка')
+    drink = models.ForeignKey(Drink, related_name='items', on_delete=models.CASCADE, verbose_name='Название')
     product = models.ForeignKey(Products, related_name='drink_items', on_delete=models.PROTECT, verbose_name='Продукт')
     quantity = models.PositiveIntegerField(default=0, verbose_name='Количество')
 
@@ -89,9 +90,9 @@ class DrinkItem(models.Model):
 
 
 class Document(models.Model):
-    RECEIPT = 'Receipt'
-    CONSUMPTION = 'Consumption'
-    DOCUMENT_TYPE = ((RECEIPT, 'Receipt'), (CONSUMPTION, 'Consumption'))
+    RECEIPT = 'Приход'
+    CONSUMPTION = 'Расход'
+    DOCUMENT_TYPE = ((RECEIPT, 'Приход'), (CONSUMPTION, 'Расход'))
 
     document_type = models.CharField(max_length=20, choices=DOCUMENT_TYPE, verbose_name='Тип документа')
     created = models.DateTimeField(auto_now_add=True, verbose_name='Создано')
@@ -106,7 +107,7 @@ class Document(models.Model):
 
 
 class DocumentItem(models.Model):
-    document = models.ForeignKey(Document, related_name='items', on_delete=models.CASCADE)
+    document = models.ForeignKey(Document, related_name='items', on_delete=models.CASCADE, verbose_name='Документ')
     product = models.ForeignKey(Products, related_name='document_items', on_delete=models.CASCADE, verbose_name='Товар')
     quantity = models.PositiveSmallIntegerField(default=0, verbose_name='Количество')
 
@@ -128,7 +129,7 @@ class Selling(models.Model):
 
 class SellingItem(models.Model):
     selling = models.ForeignKey(Selling, on_delete=models.CASCADE, verbose_name='Дата')
-    drink = models.ForeignKey(Drink, on_delete=models.CASCADE, verbose_name='Напиток')
+    drink = models.ForeignKey(Drink, on_delete=models.CASCADE, verbose_name='Товар')
     quantity = models.PositiveSmallIntegerField(default=0, verbose_name='Количество')
 
     def __str__(self):

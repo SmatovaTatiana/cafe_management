@@ -16,83 +16,74 @@
 </head>
 
 <body>
-
-    {% if user.is_superuser %}
+<div class="container-fluid">
+    <div class="row align-items-start" id="nav">
+        {% if user.is_superuser %}
     	<nav class="navbar navbar-expand-lg bg-body-tertiary" style="background-color: #e3f2fd;">
 			<a class="navbar-brand" href="{% url 'cafecrm:home' %}"><h3>{{ user.first_name }}</h3></a>
-            <a href="{% url 'cafecrm:logout' %}">Logout</a>
-			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-		    <span class="navbar-toggler-icon"></span>
-		  	</button>
+
 		  	<div class="collapse navbar-collapse" id="navbarSupportedContent">
 		  		<ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
-                        <a class="nav-link" href="{% url 'cafecrm:home' %}">Home</a>
+                        <a class="nav-link" href="{% url 'cafecrm:stock' %}" title="Остатки на складе">Остатки</a>
                     </li>
                     <li class="nav-item active">
-			        		<a class="nav-link" href="{% url 'cafecrm:stock' %}">Stock</a>
-                    </li>
-                    <li class="nav-item active">
-			        		<a class="nav-link" href="{% url 'cafecrm:menu' %}">Menu</a>
+                        <a class="nav-link" href="{% url 'cafecrm:menu' %}" title="Что в продаже">Меню</a>
                     </li>
                     <li class="nav-item dropdown">
-                      <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Add new document:
-                      </a>
-                      <ul class="dropdown-menu">
-                          <li><a class="dropdown-item" href="{% url 'cafecrm:add_simple_product' %}">Add new product</a></li>
-                          <li><a class="dropdown-item" href="{% url 'cafecrm:products' %}">Add new drink</a></li>
-                          <li><a class="dropdown-item" href="{% url 'cafecrm:drinks' %}">Add new selling</a></li>
-                          <li><a class="dropdown-item" href="{% url 'cafecrm:products' %}">Add new stock document</a></li>
-                      </ul>
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Создать документ: </a>
+                        <ul class="dropdown-menu">
+                          <li><a class="dropdown-item" href="{% url 'cafecrm:add_simple_product' %}" title="Внести новый продукт">Новый продукт</a></li>
+                          <li><a class="dropdown-item" href="{% url 'cafecrm:products' %}">Добавить товар в меню</a></li>
+                          <li><a class="dropdown-item" href="{% url 'cafecrm:drinks' %} ">Продажа</a></li>
+                          <li><a class="dropdown-item" href="{% url 'cafecrm:products' %}">Приход / расход</a></li>
+                        </ul>
                     </li>
                     <li class="nav-item active">
-                        <a class="nav-link" href="admin/">Admin panel</a>
+                        <a class="nav-link" href="admin/">Панель администратора</a>
                     </li>
+                <li class="nav-item active">
+                        <a class="nav-link" href="{% url 'cafecrm:logout' %}">Выйти</a>
+                    </li>
+
                     <li><div class="cart">
     {% with total_items=doc|length %}
         {% if doc|length > 0 %}
-            Your document:
-            <a href="{% url "doc_temp:doc_detail" %}">
-                {{ total_items }} item{{ total_items|pluralize }}
+
+            <a href="{% url "doc_temp:doc_detail" %}" style="color: red">
+                Есть незаконченный документ
             </a>
-        {% else %}
-            Your document is empty.
         {% endif %}
     {% endwith %}
 </div></li>
-                <li class="nav-item active">{{ user.username }}</li>
 		  		</ul>
 		  	</div>
 		</nav>
     {% else %}
         <nav class="navbar navbar-expand-lg bg-body-tertiary" style="background-color: #e3f2fd;">
 			<a class="navbar-brand" href="{% url 'cafecrm:home' %}"><h3>{{ user.first_name }}</h3></a>
-			<a href="{% url 'cafecrm:logout' %}">Выйти</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 		    <span class="navbar-toggler-icon"></span>
 		  	</button>
 		  	<div class="collapse navbar-collapse" id="navbarSupportedContent">
 		  		<ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
-                        <a class="nav-link" href="{% url 'cafecrm:home' %}">Home</a>
+                        <a class="nav-link" href="{% url 'cafecrm:menu' %}">Меню</a>
                     </li>
                     <li class="nav-item active">
-			        		<a class="nav-link" href="{% url 'cafecrm:menu' %}">Menu</a>
+                        <a class="nav-link" href="{% url 'cafecrm:drinks' %}">Продажа</a>
                     </li>
-                    <li><a class="dropdown-item" href="{% url 'cafecrm:drinks' %}">Add new selling</a></li>
-
-
-
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{% url 'cafecrm:logout' %}">Выйти</a>
+                    </li>
                     <li><div class="cart">
     {% with total_items=doc|length %}
         {% if doc|length > 0 %}
-            Your document:
-            <a href="{% url "doc_temp:doc_detail" %}">
-                {{ total_items }} item{{ total_items|pluralize }}
+
+            <a href="{% url "doc_temp:doc_detail" %}" style="color: red">
+                Есть незаконченный документ
             </a>
-        {% else %}
-            Your document is empty.
         {% endif %}
     {% endwith %}
 </div></li>
@@ -100,9 +91,11 @@
 		  	</div>
 		</nav>
     {% endif %}
-
-{% block content %}
-{% endblock %}
-
+    </div>
+    <div id="content">
+        {% block content %}
+        {% endblock %}
+    </div>
+</div>
 </body>
 </html>
