@@ -9,12 +9,16 @@
 
     {% if not sent %}
         {% if message %}
-            {{ product }} {{ message }}.
-            <br>
-             В документе - {{ quantity }}, доступный остаток - {{ stock }}
+            <div class="alert alert-danger" role="alert">
+                <strong>!!! {{ message }}</strong>
+                <br>
+                {{ product }}<br>
+             В документе - {{ quantity }}, остаток - {{ stock }}
             <br> Не хватает {{ deficit }}
-            <br>
+             </div>
+
             <a href="{% url 'doc_temp:doc_detail' %}" class="button light">Изменить количество товара</a>
+
         {% else %}
 
          <h4>Новый документ</h4>

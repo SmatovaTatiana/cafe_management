@@ -4,76 +4,77 @@
     Stock
 {% endblock %}
 {% block content %}
-<div class="row align-items-start"">
-    <b>Продукты</b>
-    <hr>
-    <table class="cart">
-        <thead>
+    <!--Продукты-->
+<div class="container mt-3">
+  <h4>Продукты</h4>
+  <table class="table table-striped">
+    <thead class="table-dark">
+      <tr>
+        <th>Наименование</th>
+        <th>Наличие</th>
+        <th>Мин. необходимый остаток</th>
+        <th>Необходимо докупить</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in products %}
         <tr>
-            <th>Наименование</th>
-            <th>Наличие</th>
-            <th>Мин. необходимый остаток</th>
-            <th>Необходимо докупить</th>
+          <td> {{ item.product_name }} </td>
+          <td class="num">{{ item.stock }} {{ item.unit  }}</td>
+          <td>{{ item.min_stock }} {{ item.unit  }}</td>
+          <td>{{ item.need_to_order }} {{ item.unit  }}</td>
         </tr>
-        </thead>
-        <tbody>
-        {% for item in products %}
-            <tr>
-                <td> {{ item.product_name }} </td>
-                <td class="num">{{ item.stock }} {{ item.unit  }}</td>
-                <td>{{ item.min_stock }} {{ item.unit  }}</td>
-            <td>{{ item.need_to_order }} {{ item.unit  }}</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-    <hr>
-    <b>Штучный товар</b>
-    <hr>
-    <table class="cart">
-        <thead>
-        <tr>
-            <th>Наименование</th>
-            <th>Наличие</th>
-            <th>Мин. необходимый остаток</th>
-            <th>Необходимо докупить</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for item in snacks %}
-            <tr>
-                <td> {{ item.product_name }} </td>
-                <td class="num">{{ item.stock }} {{ item.unit  }}</td>
-                <td>{{ item.min_stock }} {{ item.unit  }}</td>
-            <td>{{ item.need_to_order }} {{ item.unit  }}</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-    <hr>
-    <b>Тара</b>
-    <hr>
-    <table class="cart">
-        <thead>
-        <tr>
-            <th>Наименование</th>
-            <th>Наличие</th>
-            <th>Мин. необходимый остаток</th>
-            <th>Необходимо докупить</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for item in tares %}
-            <tr>
-                <td> {{ item.product_name }} </td>
-                <td class="num">{{ item.stock }} {{ item.unit  }}</td>
-                <td>{{ item.min_stock }} {{ item.unit  }}</td>
-            <td>{{ item.need_to_order }} {{ item.unit  }}</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-    <hr>
-
+      {% endfor %}
+    </tbody>
+  </table>
 </div>
+    <!--Штучный товар-->
+<div class="container mt-3">
+  <h4>Штучный товар</h4>
+  <table class="table table-striped">
+    <thead class="table-dark">
+      <tr>
+        <th>Наименование</th>
+        <th>Наличие</th>
+        <th>Мин. необходимый остаток</th>
+        <th>Необходимо докупить</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in snacks %}
+        <tr>
+          <td> {{ item.product_name }} </td>
+          <td class="num">{{ item.stock }} {{ item.unit  }}</td>
+          <td>{{ item.min_stock }} {{ item.unit  }}</td>
+          <td>{{ item.need_to_order }} {{ item.unit  }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+    <!--Тара-->
+<div class="container mt-3">
+  <h4>Тара</h4>
+  <table class="table table-striped">
+    <thead class="table-dark">
+      <tr>
+        <th>Наименование</th>
+        <th>Наличие</th>
+        <th>Мин. необходимый остаток</th>
+        <th>Необходимо докупить</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in tares %}
+        <tr>
+          <td> {{ item.product_name }} </td>
+          <td class="num">{{ item.stock }} {{ item.unit  }}</td>
+          <td>{{ item.min_stock }} {{ item.unit  }}</td>
+          <td>{{ item.need_to_order }} {{ item.unit  }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
 {% endblock %}

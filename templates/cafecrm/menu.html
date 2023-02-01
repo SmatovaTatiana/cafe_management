@@ -8,31 +8,54 @@
 
 
 {% block content %}
-     <div class="row justify-content-center">
-    <div class="col-4">
-    <b>Напитки</b>
-    <hr>
+    <!--Drinks-->
+<div class="container mt-3">
+  <h4>Напитки</h4>
+  <table class="table table-striped">
+    <thead class="table-dark">
+      <tr>
+        <th>Наименование</th>
+        <th>Состав</th>
+      </tr>
+    </thead>
+    <tbody>
       {% for el in menu_drinks %}
-        {{ el.drink_name }}
-        <ul>
+        <tr>
+          <td> {{ el.drink_name }} </td>
+          <td>
+            <ul>
             {% for item in drink_items %}
-                {% if item.drink_id == el.id %}
+              {% if item.drink_id == el.id %}
                 <li>
-                    {{ item.product }} - {{ item.quantity }} {{ item.product.unit }}
+                  {{ item.product }} - {{ item.quantity }} {{ item.product.unit }}
                 </li>
-                {% endif %}
+              {% endif %}
             {% endfor %}
-        </ul>
-    {% endfor %}
-    </div>
-    <div class="col-4">
-      <b>Снеки</b>
-    <hr>
-    {% for sn in menu_snack %}
-        {{ sn.drink_name }}
-        <br>
-    {% endfor %}
-    </div>
-  </div>
+            </ul>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+    <!--Snack-->
+<div class="container mt-3">
+  <h4>Снеки</h4>
+  <table class="table table-striped">
+    <thead class="table-dark">
+      <tr>
+        <th>Наименование</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for sn in menu_snack %}
+        <tr>
+          <td> {{ sn.drink_name }} </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
 
 {% endblock %}

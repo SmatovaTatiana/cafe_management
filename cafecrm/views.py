@@ -163,7 +163,7 @@ def document_create(request):
                             el.save()
                         else:
                             if el.stock < item['quantity']:
-                                message = 'Не хватает количества на складе'
+                                message = 'Недостаточно товара на складе'
                                 deficit = item['quantity'] - el.stock
                                 context = {
                                     'message': message,
