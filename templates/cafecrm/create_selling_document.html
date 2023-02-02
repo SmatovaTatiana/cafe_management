@@ -6,56 +6,60 @@
 {% endblock %}
 
 {% block content %}
-
-    {% if not sent %}
-            {% if message %}
-                {{ product }} {{ message }}.
-                <br>
-                 В документе -  {{ quantity }}, доступный остаток - {{ stock }}
-                <br> Не хватает {{ deficit }}
-                <br>
-                <a href="{% url 'sell_temp:sell_detail' %}" class="button light">Изменить количество товара</a>
-            {% else %}
-
-                <h4>Новый документ</h4>
-                <!--form-->
-                <form action="" method="post" class="order-form">
-                    {{ form.as_p }}
-
-                    <!--items-->
-                    <div class="order-info">
-                    <ul>
-                        {% for item in sell %}
-                            <li>
-                                {{ item.drink.drink_name }} -
-                                {{ item.quantity }}
-                            </li>
-                        {% endfor %}
-                    </ul>
-                    <a href="{% url 'cafecrm:drinks' %}" class="button light">Добавить товар </a>
-                    <br>
-                    <a href="{% url 'sell_temp:sell_detail' %}" class="button light">Изменить количество товара</a>
-                    </div>
-                                <p><input type="submit" value="Создать "></p>
-                        {% csrf_token %}
-                    </form>
+  <div class="container-fluid">
+    <div class="container d-flex justify-content-between">
+      <div class="col-3"></div>
+      <div class="col-6 text-left">
+        {% if not sent %}
+            <!--if error-->
+          {% if message %}
+            <div class="alert alert-danger" role="alert">
+              <strong>!!! {{ message }}</strong>
+              <br>
+                {% if drink == product %}
+                  {{ product }}
+                {% else %}
+                   {{ product }} в {{ drink }}<br>
                 {% endif %}
-        {% else %}
-    <!--success-->
-         <h4>Документ продажи № {{ selling.id }} был создан {{ selling.date }}</h4>
-    <!--ingredients-->
-    <div class="order-info">
-        <h3>Товары в документе: </h3>
-        <ul>
-            {% for item in sell %}
-                <li>
-                    {{ item.drink.drink_name }} - {{ item.quantity }}
-                </li>
-            {% endfor %}
-        </ul>
-    Комментарий:
-        {{ selling.comments }}
-        {{ selling.author }}
+              В документе -  {{ quantity }}, остаток - {{ stock }}
+              <br> Не хватает {{ deficit }}
+            </div>
+            <br>
+            <a href="{% url 'sell_temp:sell_detail' %}" class="button light">Изменить количество товара</a>
+          {% else %}              <!--if no error-->
+            <b>Проверьте наименование и количество:</b>
+              <!--form-->
+            <form action="" method="post">
+              {% csrf_token %}
+                    <!--items-->
+              <div class="check-list">
+                <ul class="list-group list-group-flush">
+                  {% for item in sell %}
+                    <li class="list-group-item">{{ item.drink.drink_name }} - {{ item.quantity }} шт.</li>
+                  {% endfor %}
+                </ul>
+              </div>
+                <!--comments-->
+               {{ form.comments }}
+              <div>
+                <b>В случае необходимости вы можете:</b>
+                  <br>
+                <a href="{% url 'cafecrm:drinks' %}" class="button light">Добавить товар </a>
+                  <br>
+                <a href="{% url 'sell_temp:sell_detail' %}" class="button light">Изменить его количество</a>
+                  <br>
+                 <b>Если все правильно:</b>
+              </div>
+              <p><input type="submit" class="btn-login" value="Создать"></p>
+            </form>
+          {% endif %}
+        {% else %} <!--success-->
+          <div class="alert alert-warning" role="alert">
+             Документ успешно создан
+          </div>
+        {% endif %}
+      </div>
+      <div class="col-3"></div>
     </div>
-    {% endif %}
+  </div>
 {% endblock %}

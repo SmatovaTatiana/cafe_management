@@ -6,55 +6,47 @@
 {% endblock %}
 
 {% block content %}
-
-    {% if not sent %}
-        {% if message %}
-            <div class="alert alert-danger" role="alert">
-                <strong>!!! {{ message }}</strong>
-                <br>
-                {{ product }}<br>
-             В документе - {{ quantity }}, остаток - {{ stock }}
-            <br> Не хватает {{ deficit }}
-             </div>
-
-            <a href="{% url 'doc_temp:doc_detail' %}" class="button light">Изменить количество товара</a>
-
-        {% else %}
-
-         <h4>Новый документ</h4>
-        <!--form-->
-        <form action="" method="post" class="order-form">
-            {{ form.as_p }}
+  {% if not sent %}
+      <!--if error-->
+    {% if message %}
+      <div class="alert alert-danger" role="alert">
+        <strong>!!! {{ message }}</strong>
+          <br>
+          {{ product }}<br>
+           В документе - {{ quantity }}, остаток - {{ stock }}
+          <br> Не хватает {{ deficit }}
+      </div>
+        <a href="{% url 'doc_temp:doc_detail' %}" class="button light">Изменить количество товара</a>
+        <!--if no error-->
+    {% else %}
+      <h4>Новый документ</h4>
+      <!--form-->
+      <form action="" method="post" class="order-form">
+        {{ form.as_p }}
             <!--items-->
         <div class="order-info">
-        <h3>Товар в  {{ document_type }}: </h3>
-        <ul>
+          <h3>Товар в  {{ document_type }}: </h3>
+          <ul>
             {% for item in doc %}
-                <li>
-                    {{ item.product.product_name }} -
-                    {{ item.quantity }} {{ item.product.unit }}
+              <li>{{ item.product.product_name }} - {{ item.quantity }} {{ item.product.unit }} </li>
             {% endfor %}
-        </ul>
-
-    <a href="{% url 'cafecrm:products' %}" class="button light">Добавить товар в {{ document_type }}</a>
-    <br>
-
-    <a href="{% url 'doc_temp:doc_detail' %}" class="button light">Изменить количество товара</a>
-    </div>
-                    <p><input type="submit" value="Создать {{ document_type }}"></p>
+          </ul>
+          <a href="{% url 'cafecrm:products' %}" class="button light">Добавить товар в {{ document_type }}</a>
+          <br>
+          <a href="{% url 'doc_temp:doc_detail' %}" class="button light">Изменить количество товара</a>
+        </div>
+          <p><input type="submit" value="Создать {{ document_type }}"></p>
             {% csrf_token %}
-        </form>
-            {% endif %}
-    {% else %}
-
-        <!--success-->
-         <h4>Документ - {{ document.document_type }} № {{ document.id }} был создан {{ document.created }}</h4>
-    <!--ingredients-->
+      </form>
+    {% endif %}
+  {% else %} <!--success-->
+    <h4>Документ - {{ document.document_type }} № {{ document.id }} был создан {{ document.created }}</h4>
+      <!--ingredients-->
     <div class="order-info">
-        <h4>Товары в документе: </h4>
+      <h4>Товары в документе: </h4>
         <ul>
-            {% for item in doc %}
-                <li>
+          {% for item in doc %}
+            <li>
                     {{ item.product.product_name }} - {{ item.quantity }} {{ item.product.unit }}
                 </li>
             {% endfor %}

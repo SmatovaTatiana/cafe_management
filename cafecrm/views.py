@@ -197,7 +197,7 @@ def selling_document_create(request):
     sell = Selltemp(request)
     sent = False
     selling = []
-
+    message = ''
     if request.method == 'POST':
         form = SellingDocumentCreateForm(request.POST)
         if form.is_valid():
@@ -209,25 +209,26 @@ def selling_document_create(request):
                                            drink=item['drink'],
                                            quantity=item['quantity'],
                                            )
-                prodano = DrinkItem.objects.filter(drink=item['drink'])
-                for el in prodano:
-                    aga = Products.objects.filter(id=el.product_id)
-                    for a in aga:
-                        if a.stock < (el.quantity * item['quantity']):
-                            message = 'Не хватает количества на складе'
-                            deficit = item['quantity'] - a.stock
+                sold = DrinkItem.objects.filter(drink=item['drink'])
+                for el in sold:
+                    product_sold = Products.objects.filter(id=el.product_id)
+                    for prod in product_sold:
+                        if item['quantity'] <= prod.stock:
+                            prod.stock = int(prod.stock - (el.quantity * item['quantity']))
+                            prod.save()
+                        else:
+                            message = 'Недостаточно товара на складе'
+                            quantity = int(el.quantity * item['quantity'])
+                            deficit = int(quantity - prod.stock)
                             context = {
+                               'drink': str(item['drink']),
                                 'message': message,
-                                'product': el.product,
-                                'quantity': int(el.quantity * item['quantity']),
-                                'stock': a.stock,
+                                'stock': prod.stock,
                                 'deficit': deficit,
+                                'product': str(el.product),
+                                'quantity': quantity
                             }
                             return render(request, 'cafecrm/create_selling_document.html', context)
-                        else:
-                            a.stock = int(a.stock - (el.quantity * item['quantity']))
-                            a.save()
-                # clear temp document
             sell.clear()
             selling = selling
 

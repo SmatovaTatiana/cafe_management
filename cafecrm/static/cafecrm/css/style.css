@@ -42,3 +42,22 @@ th{
 	margin-top: 15px;
 	background-color: #FFF7E5FF;
 }
+
+.comments{
+	height: 100px;
+	border-radius: 0.375rem;
+	margin-bottom: 10px;
+	border-width: 2px;
+}
+textarea {
+    margin: 0;
+	height: 100px;
+    font-family: inherit;
+    font-size: inherit;
+    /* line-height: inherit;*/
+}
+
+.check-list{
+	font-family: "Bitstream Vera Sans Mono", Monaco, "Courier New", Courier, monospace;
+	text-align: start;
+}

@@ -4,38 +4,41 @@
     Temp document
 {% endblock %}
 {% block content %}
-
-    <table class="cart">
-        <thead>
-        <tr>
-            <th>Товар</th>
-            <th>Количество</th>
-            <th>Удалить</th>
-            <th>Итого количество</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for item in doc %}
+<div class="container mt-3">
+  <h4>Продукты</h4>
+  <table class="table table-striped">
+    <thead class="table-dark">
+      <tr>
+        <th>Наименование</th>
+        <th>Количество</th>
+        <th>Удалить</th>
+        <th>Итого количество</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in doc %}
             {% with product=item.product %}
-                <tr>
-                    <td>
-                        <a href="{{ product.get_absolute_url }}">
+        <tr>
+          <td> <a href="{{ product.get_absolute_url }}">
                             {{ product.product_name }}
-                        </a>
-                    </td>
-                    <td> <form action="{% url "doc_temp:doc_add" product.id %}" method="post">
+                        </a> </td>
+          <td><form action="{% url "doc_temp:doc_add" product.id %}" method="post">
                 {{ item.update_quantity_form.quantity }}
                 {{ item.update_quantity_form.update }}
-                <input type="submit" value="Обновить">
+                <input type="submit" value="Изменить">
                 {% csrf_token %}
-              </form></td>
-                    <td><a href="{% url "doc_temp:doc_remove" product.id %}">Удалить</a></td>
-                    <td class="num">{{ item.quantity }}</td>
-                </tr>
-            {% endwith %}
+              </form>
+          </td>
+          <td><a href="{% url "doc_temp:doc_remove" product.id %}">Удалить</a></td>
+          <td>{{ item.quantity }}</td>
+        </tr>
+          {% endwith %}
         {% endfor %}
-        </tbody>
-    </table>
+
+    </tbody>
+  </table>
+</div>
+
 <br>
     <p>
         <a href="{% url 'cafecrm:products' %}" class="button light">Вернуться к выбору товара</a>

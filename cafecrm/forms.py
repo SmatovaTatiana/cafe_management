@@ -1,5 +1,5 @@
 from django import forms
-from django.forms import ModelForm, modelformset_factory, TextInput, TypedChoiceField
+from django.forms import ModelForm, modelformset_factory, TextInput, Textarea
 from .models import Products, Drink, Document, Selling
 
 
@@ -47,3 +47,11 @@ class SellingDocumentCreateForm(forms.ModelForm):
     class Meta:
         model = Selling
         fields = ['comments']
+        widgets = {
+            'comments': Textarea(attrs={
+                'class': 'comments',
+                'placeholder': 'Комментарий к документу',
+
+            }),
+
+        }

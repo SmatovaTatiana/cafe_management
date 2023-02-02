@@ -6,44 +6,45 @@
 {% endblock %}
 
 {% block content %}
-
-    {% if not sent %}
-         <h4>Чтобы создать новый товар в меню, введите следующие данные:</h4>
-        <!--form-->
+<div class="container-fluid">
+  <div class="container d-flex justify-content-between">
+    <div class="col-3"></div>
+    <div class="col-6 text-left">
+      {% if not sent %}
+        <b>Чтобы создать новый товар в меню, введите следующие данные:</b>
+            <!--form-->
         <form action="" method="post" class="order-form">
-            {{ form.as_p }}
-
+          {% csrf_token %}
+          <div class="input-field-form">
+            Название: {{ form.drink_name }}
+          </div>
+          <div class="input-field-form">
+            Тип товара: {{ form.menu_type }}
+          </div>
             <!--ingredients-->
-    <div class="order-info">
-        <h4>Новый пункт меню состоит из: </h4>
-        <ul>
-            {% for item in doc %}
-                <li>
-                    {{ item.product.product_name }} -
-                    {{ item.quantity }} {{ item.product.unit }}
-                </li>
-            {% endfor %}
-        </ul>
-    <a href="{% url 'cafecrm:products' %}" class="button light">Добавить еще товар</a>
-    <br>
-    <a href="{% url 'doc_temp:doc_detail' %}" class="button light">Изменить количество</a>
-    </div>
-                    <p><input type="submit" value="Создать"></p>
-            {% csrf_token %}
+
+            <b>Новый пункт меню состоит из: </b>
+            <div class="check-list">
+              <ul class="list-group list-group-flush">
+                {% for item in doc %}
+                  <li class="list-group-item">{{ item.product.product_name }} - {{ item.quantity }} {{ item.product.unit }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+
+          <a href="{% url 'cafecrm:products' %}" class="button light">Добавить еще товар</a>
+          <br>
+          <a href="{% url 'doc_temp:doc_detail' %}" class="button light">Изменить количество</a>
+          <p><input type="submit" class="btn-login" value="Создать"></p>
         </form>
-    {% else %}
-    <!--success-->
-         <h4>Новый товар - {{ drink_name }} - был добавлен в меню</h4>
-    <!--ingredients-->
-    <div class="order-info">
-        <h3>В него входит: </h3>
-        <ul>
-            {% for item in doc %}
-                <li>
-                    {{ item.product.product_name }} - {{ item.quantity }} {{ item.product.unit }}
-                </li>
-            {% endfor %}
-        </ul>
+      {% else %}
+            <!--success-->
+        <div class="alert alert-warning" role="alert">
+          Документ успешно создан
+        </div>
+      {% endif %}
     </div>
-    {% endif %}
+    <div class="col-3"></div>
+  </div>
+</div>
 {% endblock %}

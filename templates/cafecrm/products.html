@@ -6,13 +6,30 @@
 {% endblock %}
 
 {% block content %}
-<div class="item">
-            <form action="{% url 'doc_temp:doc_add'  %}" method="post">
-                {{ doc_product_form }}
-                {% csrf_token %}
-                <input type="submit" value="Добавить">
-            </form>
+  <div class="container-fluid">
+    <div class="container d-flex justify-content-between">
+      <div class="col-3"></div>
+      <div class="col-6 text-left">
 
-</div>
+             <p>Выбрать товар:</p>
+             <hr>
+             <form action="{% url 'doc_temp:doc_add' %}" method="post">
+                {% csrf_token %}
+                 <div class="input-field-form">
+                     Товар: {{ doc_product_form.product_name }}
+                 </div>
+                 <div class="input-field-form">
+                     Количество: {{ doc_product_form.quantity }}
+                 </div>
+                <div class="input-field-form">
+               <input type="submit" class="btn-login" value="Добавить">
+             </div>
+             </form>
+
+      </div>
+      <div class="col-3"></div>
+    </div>
+  </div>
+
 
 {% endblock %}

@@ -4,40 +4,44 @@
     Temp document
 {% endblock %}
 {% block content %}
-    <table class="temp_doc">
-        <thead>
-        <tr>
-
-            <th>Товар</th>
-            <th>Количество</th>
-            <th>Удалить</th>
-            <th>Итого количество</th>
-
-        </tr>
-        </thead>
-        <tbody>
-        {% for item in sell %}
+  <div class="container mt-3">
+  <h4>Продукты</h4>
+  <table class="table table-striped">
+    <thead class="table-dark">
+      <tr>
+        <th>Наименование</th>
+        <th>Количество</th>
+        <th>Удалить</th>
+        <th>Итого количество</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in sell %}
             {% with drink=item.drink %}
-                <tr>
-                    <td> {{ drink.drink_name }}</td>
-                    <td> <form action="{% url 'sell_temp:sell_add' drink.id %}" method="post">
+        <tr>
+          <td>{{ drink.drink_name }}</td>
+          <td><form action="{% url 'sell_temp:sell_add' drink.id %}" method="post">
                 {{ item.update_quantity_form.quantity }}
                 {{ item.update_quantity_form.update }}
                 <input type="submit" value="Обновить">
                 {% csrf_token %}
-              </form></td>
-                    <td><a href="{% url "sell_temp:sell_remove" drink.id %}">Удалить</a></td>
-                    <td class="num">{{ item.quantity }}</td>
-                </tr>
-            {% endwith %}
+              </form>
+          </td>
+          <td><a href="{% url "sell_temp:sell_remove" drink.id %}">Удалить</a></td>
+          <td>{{ item.quantity }}</td>
+        </tr>
+          {% endwith %}
         {% endfor %}
-        </tbody>
-    </table>
+
+    </tbody>
+  </table>
+</div>
+
 <br>
     <p>
-        <a href="{% url 'cafecrm:drinks' %}" class="button light">Вернуться к выбору товара</a>
+        <a href="{% url 'cafecrm:drinks' %}">Добавить еше товар</a>
         <br>
             <br>
-        <a href="{% url 'cafecrm:selling_document_create' %}" class="button">Создать документ продажи</a>
+        <a href="{% url 'cafecrm:selling_document_create' %}">Создать документ продажи</a>
     </p>
 {% endblock %}
