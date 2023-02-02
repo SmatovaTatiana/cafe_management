@@ -16,12 +16,13 @@ urlpatterns = [
     path('stock', views.stock, name='stock'),
     path('menu', views.menu, name='menu'),
     path('products', views.products, name='products'),
+ #   path('products_for_new_drink', views.products_for_new_drink, name='products_for_new_drink'),
     path('drink_create', views.drink_create, name='drink_create'),
     path('document_create', views.document_create, name='document_create'),
     path('drinks', views.drinks, name='drinks'),
     path('selling_document_create', views.selling_document_create, name='selling_document_create'),
     path('<slug:slug>', views.product_detail, name='product_detail'),
-    path('cafecrm/<slug:slug>', views.drink_detail, name='drink_detail'),
+ #   path('cafecrm/<slug:slug>', views.drink_detail, name='drink_detail'),
 
 
 

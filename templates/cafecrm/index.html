@@ -15,10 +15,17 @@
       <div class="col-6 text-center">
         <img src="{% static 'cafecrm/img/logo_300.png' %}" width="250px" class="logo-login" alt="logo">
         <div class="login-form">
-          <form action="." method="post">
-            {{ form.as_p }}
+          <form action='.' method="post">
             {% csrf_token %}
-            <input type="submit" value="Login">
+              <div class="input-field-form">
+                {{ form.username }}
+            </div>
+            <div class="input-field-form">
+                {{ form.password }}
+            </div>
+              <div>
+            <input type="submit" value="Login" class="input-field-form btn-login">
+                  </div>
           </form>
         </div>
       </div>

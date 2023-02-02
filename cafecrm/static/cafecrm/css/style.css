@@ -14,5 +14,31 @@ th{
 
 .logo-login{
 	margin-top: 50px;
-	margin-bottom: 50px;
+	margin-bottom: 30px;
+}
+
+.input-field-form {
+	border-radius: 0.375rem;
+	margin-bottom: 10px;
+	border-width: 2px;
+}
+.btn-login{
+	color: var(--color-gold);
+    background-color: #141619;
+	padding-bottom: 6px;
+	border-radius: 0.375rem;
+}
+
+.btn-login:hover {
+	border-width: medium;
+	font-weight: 500;
+}
+
+.dropdown-menu{
+    --bs-dropdown-link-active-bg: #141619;
+}
+
+.alert-warning{
+	margin-top: 15px;
+	background-color: #FFF7E5FF;
 }

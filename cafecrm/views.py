@@ -62,24 +62,24 @@ def product_detail(request, slug):
 # simple form
 def add_simple_product(request):
     sent = False
-    error = ''
+    message = ''
     if request.method == 'POST':
         form = AddProductForm(request.POST)
         if form.is_valid():
-            product_name = form.cleaned_data.get('product_name')
-            slug = slugify(product_name)
-            form.save()
-            sent = True
-            return redirect(reverse_lazy("cafecrm:products"))
-        else:
-            error = 'Form is not valid'
-
-    form = AddProductForm()
+            try:
+                product_name = form.cleaned_data.get('product_name')
+                slug = slugify(product_name)
+                form.save()
+                sent = True
+                message = 'Товар успешно добавлен'
+            except:
+                message = 'Товар с таким названием уже существует'
+    else:
+        form = AddProductForm()
     context = {
         'form': form,
-        'error': error,
+        'message': message,
         'sent': sent,
-
     }
     return render(request, 'cafecrm/add_simple_product.html', context)
 

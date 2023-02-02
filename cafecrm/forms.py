@@ -1,22 +1,24 @@
 from django import forms
-from django.forms import ModelForm, modelformset_factory
+from django.forms import ModelForm, modelformset_factory, TextInput, TypedChoiceField
 from .models import Products, Drink, Document, Selling
 
 
-
+# login form for index page
 class LoginForm(forms.Form):
-    username = forms.CharField()
-    password = forms.CharField(widget=forms.PasswordInput)
+    username = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'username',
+                                                             'class': 'input-field-form'}))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'password',
+                                                                 'class': 'input-field-form'}))
 
 
-# for simple form
+# add new product
 class AddProductForm(ModelForm):
     class Meta:
         model = Products
         fields = ['product_name', 'product_type', 'unit']
         PRODUCT_TYPE_CHOICES = [(type, str(type)) for type in Products.PRODUCT_TYPE]
         UNIT_CHOICES = [(unit, str(unit)) for unit in Products.UNITS]
-        product_name = forms.TextInput
+        product_name = forms.TextInput()
         product_type = forms.TypedChoiceField(choices=PRODUCT_TYPE_CHOICES)
         unit = forms.TypedChoiceField(choices=UNIT_CHOICES)
 

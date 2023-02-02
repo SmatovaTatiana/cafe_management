@@ -6,28 +6,40 @@
 {% endblock %}
 
 {% block content %}
- <div class="send-message col-6 d-flex justify-content-center" >
-        {% if not sent %} <!--добавляем флаг (добавлено во вьюшку) если не было отправлено, открываем форму-->
-            <form method="post">
-            <div><p>Чтобы создать новый товар, введите следующие данные:</p></div>
-            {% csrf_token %}
-            <div class="form-group">
-                Выбрать тип товара: {{ form.product_type }}
-            </div>
-            <div class="form-group">
-                Ввести название товара: {{ form.product_name }}
-            </div>
-            <div class="form-group">
-                Ввести единицу измерения:{{ form.unit }}
-            </div>
-
-            <div class="form-group">
-                <input type="submit" class="btn btn-primary btn-send-message" value="Добавить товар">
-            </div>
-            <span>{{ error }}</span>
-        </form>
-        {% else %}  <!--если отправлено-->
-            <br> Товар успешно добавлен.
-        {% endif %}
+  <div class="container-fluid">
+    <div class="container d-flex justify-content-between">
+      <div class="col-3"></div>
+      <div class="col-6 text-center">
+         {% if not sent %} <!--добавляем флаг (добавлено во вьюшку) если не было отправлено, открываем форму-->
+           <form method="post">
+             <p>Чтобы создать новый товар, введите следующие данные:</p>
+               <hr>
+             {% csrf_token %}
+             <div class="input-field-form">
+               Тип товара: {{ form.product_type }}
+             </div>
+             <div class="input-field-form">
+               Название товара: {{ form.product_name }}
+             </div>
+             <div class="input-field-form">
+                 Единица измерения: {{ form.unit }}
+             </div>
+             <div class="input-field-form">
+               <input type="submit" class="btn-login" value="Добавить товар">
+             </div>
+           </form>
+             {% if message %}
+               <div class="alert alert-danger" role="alert">
+                 {{ message}}
+               </div>
+             {% endif %}
+         {% else %}  <!--если отправлено-->
+           <div class="alert alert-warning" role="alert">
+             {{ message}}
+           </div>
+         {% endif %}
+      </div>
+      <div class="col-3"></div>
     </div>
+  </div>
 {% endblock %}
