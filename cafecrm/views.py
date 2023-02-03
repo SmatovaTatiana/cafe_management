@@ -87,21 +87,26 @@ def add_simple_product(request):
 def drink_create(request):
     doc = Doctemp(request)
     sent = False
+    message = ''
     drink_name = ''
     slug = ''
     if request.method == 'POST':
         form = DrinkCreateForm(request.POST)
         if form.is_valid():
-            drink_name = form.cleaned_data.get('drink_name')
-            slug = slugify(drink_name)
-            drink = form.save()
-            sent = True
-            for item in doc:
-                DrinkItem.objects.create(drink=drink,
-                                         product=item['product'],
-                                         quantity=item['quantity'])
-            # очистка корзины
-            doc.clear()
+            try:
+                drink_name = form.cleaned_data.get('drink_name')
+                slug = slugify(drink_name)
+                drink = form.save()
+                sent = True
+                message = 'Товар успешно добавлен'
+                for item in doc:
+                    DrinkItem.objects.create(drink=drink,
+                                             product=item['product'],
+                                             quantity=item['quantity'])
+                # очистка корзины
+                doc.clear()
+            except:
+                message = 'Товар с таким названием уже существует'
     else:
         form = DrinkCreateForm
     context = {
@@ -110,7 +115,8 @@ def drink_create(request):
         'sent': sent,
         'title': 'Create drink',
         'drink_name': drink_name,
-        'slug': slug
+        'slug': slug,
+        'message': message,
     }
     return render(request, 'cafecrm/drink_create.html', context)
 
@@ -197,7 +203,6 @@ def selling_document_create(request):
     sell = Selltemp(request)
     sent = False
     selling = []
-    message = ''
     if request.method == 'POST':
         form = SellingDocumentCreateForm(request.POST)
         if form.is_valid():
@@ -209,29 +214,27 @@ def selling_document_create(request):
                                            drink=item['drink'],
                                            quantity=item['quantity'],
                                            )
-                sold = DrinkItem.objects.filter(drink=item['drink'])
-                for el in sold:
-                    product_sold = Products.objects.filter(id=el.product_id)
-                    for prod in product_sold:
-                        if item['quantity'] <= prod.stock:
-                            prod.stock = int(prod.stock - (el.quantity * item['quantity']))
-                            prod.save()
-                        else:
-                            message = 'Недостаточно товара на складе'
-                            quantity = int(el.quantity * item['quantity'])
-                            deficit = int(quantity - prod.stock)
+                prodano = DrinkItem.objects.filter(drink=item['drink'])
+                for el in prodano:
+                    aga = Products.objects.filter(id=el.product_id)
+                    for a in aga:
+                        if a.stock < (el.quantity * item['quantity']):
+                            message = 'Не хватает количества на складе'
+                            deficit = item['quantity'] - a.stock
                             context = {
-                               'drink': str(item['drink']),
                                 'message': message,
-                                'stock': prod.stock,
+                                'product': el.product,
+                                'quantity': int(el.quantity * item['quantity']),
+                                'stock': a.stock,
                                 'deficit': deficit,
-                                'product': str(el.product),
-                                'quantity': quantity
                             }
                             return render(request, 'cafecrm/create_selling_document.html', context)
+                        else:
+                            a.stock = int(a.stock - (el.quantity * item['quantity']))
+                            a.save()
+                # clear temp document
             sell.clear()
             selling = selling
-
     else:
         form = SellingDocumentCreateForm
     context = {
