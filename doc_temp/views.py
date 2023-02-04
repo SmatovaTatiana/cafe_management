@@ -7,8 +7,12 @@ from .forms import DoctempAddProductForm, DoctempUpdateProductForm
 
 
 @require_POST
-def doc_add(request, product_id=0):
+def doc_add(request, product_id=0, prev_page=''):
     doc = Doctemp(request)
+    if prev_page in ['products_for_new_drink', 'drink_create']:
+        prev_page = 'new_drink_document'
+    elif prev_page in ['products', 'document_create']:
+        prev_page = 'stock_document'
     if product_id:
         product = get_object_or_404(Products, id=product_id)
         form = DoctempUpdateProductForm(request.POST)
@@ -27,19 +31,36 @@ def doc_add(request, product_id=0):
                          quantity=cd['quantity'],
                          update_quantity=cd['update'])
 
-    return redirect('doc_temp:doc_detail')
+    return redirect('doc_temp:doc_detail', {'prev_page': prev_page})
 
 
-def doc_remove(request, product_id):
+def doc_remove(request, product_id=0, prev_page=''):
+    prev_page = str(prev_page).split('/')[-1]
     doc = Doctemp(request)
     product = get_object_or_404(Products, id=product_id)
     doc.remove(product)
-    return redirect('doc_temp:doc_detail')
+    if prev_page in ['products_for_new_drink', 'drink_create', 'new_drink_document']:
+        prev_page = 'new_drink_document'
+    elif prev_page in ['products', 'document_create', 'stock_document']:
+        prev_page = 'stock_document'
+
+    return redirect('doc_temp:doc_detail', {'prev_page': prev_page})
 
 
-def doc_detail(request):
+def doc_detail(request, prev_page):
     doc = Doctemp(request)
+    referer = str(request.META.get('HTTP_REFERER')).split('/')[-1]
+    new_drink = ['products_for_new_drink', 'drink_create', 'new_drink_document']
+    new_stock = ['products', 'document_create', 'stock_document']
+    if referer in new_stock or prev_page in new_stock:
+        prev_page = 'stock_document'
+    elif referer in new_drink or prev_page in new_drink:
+        prev_page = 'new_drink_document'
     for item in doc:
         item['update_quantity_form'] = DoctempAddProductForm(initial={'quantity': item['quantity'],
                                                                   'update': True})
-    return render(request, 'doc_temp/detail.html', {'doc': doc})
+    context = {
+        'doc': doc,
+        'prev_page': prev_page,
+    }
+    return render(request, 'doc_temp/detail.html', context)

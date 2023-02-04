@@ -43,10 +43,25 @@ def index(request):
 def products(request):
     products = Products.objects.all().order_by('product_name')
     doc_product_form = DoctempAddProductForm()
+    prev_page = 'products'
     return render(request,
                   'cafecrm/products.html',
                   {'title': 'Products',
                    'products': products,
+                   'prev_page': prev_page,
+                   'doc_product_form': doc_product_form}
+                  )
+
+
+def products_for_new_drink(request):
+    products = Products.objects.all().order_by('product_name')
+    doc_product_form = DoctempAddProductForm()
+    prev_page = 'products_for_new_drink'
+    return render(request,
+                  'cafecrm/products_for_new_drink.html',
+                  {'title': 'Products',
+                   'products': products,
+                   'prev_page': prev_page,
                    'doc_product_form': doc_product_form}
                   )
 
@@ -90,6 +105,7 @@ def drink_create(request):
     message = ''
     drink_name = ''
     slug = ''
+    prev_page = 'drink_create'
     if request.method == 'POST':
         form = DrinkCreateForm(request.POST)
         if form.is_valid():
@@ -117,6 +133,7 @@ def drink_create(request):
         'drink_name': drink_name,
         'slug': slug,
         'message': message,
+        'prev_page': prev_page
     }
     return render(request, 'cafecrm/drink_create.html', context)
 
@@ -147,6 +164,7 @@ def drink_detail(request, slug):
 
 
 def document_create(request):
+    prev_page = 'document_create'
     doc = Doctemp(request)
     sent = False
     document = []
@@ -176,7 +194,8 @@ def document_create(request):
                                     'product': el.product_name,
                                     'quantity': int(item['quantity']),
                                     'stock': el.stock,
-                                    'deficit': deficit
+                                    'deficit': deficit,
+                                    'prev_page': prev_page
                                 }
                                 return render(request, 'cafecrm/create_document.html', context)
                             else:
@@ -194,6 +213,7 @@ def document_create(request):
         'doc': doc,
         'sent': sent,
         'title': 'Create document',
+        'prev_page': prev_page
     }
     return render(request, 'cafecrm/create_document.html', context)
 

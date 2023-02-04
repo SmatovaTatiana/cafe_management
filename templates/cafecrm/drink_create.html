@@ -32,9 +32,9 @@
               </ul>
             </div>
 
-          <a href="{% url 'cafecrm:products' %}" class="button light">Добавить еще товар</a>
+          <a href="{% url 'cafecrm:products_for_new_drink' %}" class="button light">Добавить еще товар</a>
           <br>
-          <a href="{% url 'doc_temp:doc_detail' %}" class="button light">Изменить количество</a>
+          <a href="{% url 'doc_temp:doc_detail' prev_page %}" class="button light">Изменить количество</a>
           <p><input type="submit" class="btn-login" value="Создать"></p>
         </form>
           {% if message %}

@@ -21,7 +21,7 @@
             <br> Не хватает {{ deficit }}
           </div>
           <br>
-          <a href="{% url 'doc_temp:doc_detail' %}" class="button light">Изменить количество товара</a>
+          <a href="{% url 'doc_temp:doc_detail' prev_page %}" class="button light">Изменить количество товара</a>
         {% else %}              <!--if no error-->
           <b>Новый документ</b>
                 <!--form-->
@@ -45,7 +45,7 @@
                   <br>
                 <a href="{% url 'cafecrm:products' %}" class="button light">Добавить товар в {{ document_type }}</a>
                   <br>
-                <a href="{% url 'doc_temp:doc_detail' %}" class="button light">Изменить его количество</a>
+                <a href="{% url 'doc_temp:doc_detail' prev_page%}" class="button light">Изменить его количество</a>
                   <br>
                 <b>Если все правильно:</b>
             </div>

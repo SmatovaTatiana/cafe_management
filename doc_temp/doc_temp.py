@@ -15,7 +15,7 @@ class Doctemp(object):
             # save an empty doc in the session
             doc = self.session[settings.DOCTEMP_SESSION_ID] = {}
         self.doc = doc
-
+    # add product
     def add(self, product, quantity=1, update_quantity=False):
         """
         Добавить продукт во временный документ или обновить его количество.

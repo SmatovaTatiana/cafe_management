@@ -39,7 +39,7 @@
             </a>
             <ul class="dropdown-menu dropdown-menu-dark">
               <li><a class="dropdown-item" href="{% url 'cafecrm:add_simple_product' %}">Новый продукт</a></li>
-              <li><a class="dropdown-item" href="{% url 'cafecrm:products' %}">Добавить товар в меню</a></li>
+              <li><a class="dropdown-item" href="{% url 'cafecrm:products_for_new_drink' %}">Добавить товар в меню</a></li>
               <li><a class="dropdown-item" href="{% url 'cafecrm:drinks' %}">Продажа</a></li>
               <li><a class="dropdown-item" href="{% url 'cafecrm:products' %}">Приход / расход</a></li>
             </ul>
@@ -70,7 +70,7 @@
             </a>
               <ul class="dropdown-menu dropdown-menu-dark">
                 <li><a class="dropdown-item" href="{% url 'cafecrm:add_simple_product' %}">Новый продукт</a></li>
-                <li><a class="dropdown-item" href="{% url 'cafecrm:products' %}">Добавить товар в меню</a></li>
+                <li><a class="dropdown-item" href="{% url 'cafecrm:products_for_new_drink' %}">Добавить товар в меню</a></li>
                 <li><a class="dropdown-item" href="{% url 'cafecrm:drinks' %}">Продажа</a></li>
                 <li><a class="dropdown-item" href="{% url 'cafecrm:products' %}">Приход / расход</a></li>
               </ul>
@@ -99,7 +99,6 @@
     {% endif %}
     </div>
   </nav>
-
 <div class="container">
 {% block content %}
 {% endblock %}

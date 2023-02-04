@@ -22,14 +22,14 @@
           <td> <a href="{{ product.get_absolute_url }}">
                             {{ product.product_name }}
                         </a> </td>
-          <td><form action="{% url "doc_temp:doc_add" product.id %}" method="post">
+          <td><form action="{% url "doc_temp:doc_add" product_id=product.id prev_page=prev_page%}" method="post">
                 {{ item.update_quantity_form.quantity }}
                 {{ item.update_quantity_form.update }}
                 <input type="submit" value="Изменить">
                 {% csrf_token %}
               </form>
           </td>
-          <td><a href="{% url "doc_temp:doc_remove" product.id %}">Удалить</a></td>
+          <td><a href="{% url "doc_temp:doc_remove" product_id=product.id prev_page=prev_page%}">Удалить</a></td>
           <td>{{ item.quantity }}</td>
         </tr>
           {% endwith %}
@@ -41,10 +41,17 @@
 
 <br>
     <p>
-        <a href="{% url 'cafecrm:products' %}" class="button light">Вернуться к выбору товара</a>
+        {% if prev_page == 'new_drink_document' %}
+        <a href="{% url 'cafecrm:products_for_new_drink' %}">Добавить еще ингредиент</a>
         <br>
-        <a href="{% url 'cafecrm:drink_create' %}" class="button">Создать напиток</a>
+        <a href="{% url 'cafecrm:drink_create' %}">Создать напиток</a>
         <br>
-        <a href="{% url 'cafecrm:document_create' %}" class="button">Создать складской документ</a>
+        {% elif prev_page == 'stock_document' %}
+            <a href="{% url 'cafecrm:products' %}">Добавить еще товар в складской документ</a>
+            <br>
+        <a href="{% url 'cafecrm:document_create' %}">Создать складской документ</a>
+        <br>
+    {% endif %}
     </p>
+
 {% endblock %}
