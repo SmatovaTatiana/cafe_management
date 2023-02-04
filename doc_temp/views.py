@@ -51,10 +51,15 @@ def doc_detail(request, prev_page):
     referer = str(request.META.get('HTTP_REFERER')).split('/')[-1]
     new_drink = ['products_for_new_drink', 'drink_create', 'new_drink_document']
     new_stock = ['products', 'document_create', 'stock_document']
-    prev_page = prev_page.split(':')[-1].strip("'\}").strip(" \'")
-    if referer in new_stock or prev_page in new_stock:
+    key = 0
+    if 'stock_document' in prev_page:
+        key = 1
+    elif 'new_drink_document' in prev_page:
+        key = 2
+    #prev_page = prev_page.split(':')[-1].strip("'\}").strip(" \'")
+    if referer in new_stock or key == 1:
         prev_page = 'stock_document'
-    elif referer in new_drink or prev_page in new_drink:
+    elif referer in new_drink or key == 2:
         prev_page = 'new_drink_document'
     for item in doc:
         item['update_quantity_form'] = DoctempAddProductForm(initial={'quantity': item['quantity'],
