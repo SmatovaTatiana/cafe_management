@@ -1,0 +1,70 @@
+'''# View for adding product multiply form
+class ProductAddView(TemplateView):
+    template_name = "cafecrm/product_add.html"
+
+    # Define method to handle GET request
+    def get(self, *args, **kwargs):
+        formset = ProductsFormSet(queryset=Products.objects.none())
+        return self.render_to_response({'product_formset': formset})
+
+    # Define method to handle POST request
+    def post(self, *args, **kwargs):
+        formset = ProductsFormSet(data=self.request.POST)
+        if formset.is_valid():
+            product_name = formset.cleaned_data.get('product_name')
+            slug = slugify(product_name)
+            formset.save()
+            return redirect(reverse_lazy('cafecrm:products'))
+
+        return self.render_to_response({'product_formset': formset})'''
+
+@require_POST
+def doc_add(request, product_id=0):
+    doc = Doctemp(request)
+    form = DoctempAddProductForm(request.POST)
+    if form.is_valid():
+        cd = form.cleaned_data
+        product_id = form.cleaned_data.get('product_name')
+        product = Products.objects.get(id=product_id)
+        doc.add(product=product,
+                quantity=cd['quantity'],
+                update_quantity=cd['update'])
+    return redirect('doc_temp:doc_detail')
+
+@require_POST
+def doc_update(request, product_id):
+    doc = Doctemp(request)
+    product = get_object_or_404(Products, id=product_id)
+    form = DoctempUpdateProductForm(request.POST)
+    if form.is_valid():
+        cd = form.cleaned_data
+        doc.add(product=product,
+                 quantity=cd['quantity'],
+                 update_quantity=cd['update'])
+
+    return redirect('doc_temp:doc_detail')
+
+--------------------------------------
+views.py
+---------
+# drink detail
+def drink_detail(request, slug):
+    drink = get_object_or_404(Drink,
+                              slug=slug
+                              )
+    drink_items = DrinkItem.objects.filter(drink_id=drink.pk)
+    context = {
+        'drink_items': drink_items,
+        'drink': drink
+    }
+    return render(request,
+                  'cafecrm/drink_detail.html', context)
+
+
+def product_detail(request, slug):
+    product = get_object_or_404(Products,
+                                slug=slug)
+    return render(request,
+                  'cafecrm/product_detail.html',
+                  {'product': product})
+

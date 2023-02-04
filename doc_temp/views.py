@@ -35,7 +35,6 @@ def doc_add(request, product_id=0, prev_page=''):
 
 
 def doc_remove(request, product_id=0, prev_page=''):
-    prev_page = str(prev_page).split('/')[-1]
     doc = Doctemp(request)
     product = get_object_or_404(Products, id=product_id)
     doc.remove(product)
@@ -44,7 +43,7 @@ def doc_remove(request, product_id=0, prev_page=''):
     elif prev_page in ['products', 'document_create', 'stock_document']:
         prev_page = 'stock_document'
 
-    return redirect('doc_temp:doc_detail', {'prev_page': prev_page})
+    return redirect('doc_temp:doc_detail', prev_page)
 
 
 def doc_detail(request, prev_page):
@@ -52,6 +51,7 @@ def doc_detail(request, prev_page):
     referer = str(request.META.get('HTTP_REFERER')).split('/')[-1]
     new_drink = ['products_for_new_drink', 'drink_create', 'new_drink_document']
     new_stock = ['products', 'document_create', 'stock_document']
+    prev_page = prev_page.split(':')[-1].strip("'\}").strip(" \'")
     if referer in new_stock or prev_page in new_stock:
         prev_page = 'stock_document'
     elif referer in new_drink or prev_page in new_drink:
