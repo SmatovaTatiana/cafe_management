@@ -11,7 +11,7 @@
     <div class="col-3"></div>
       <div class="col-6 text-left">
         <p>Выбрать ингридиенты для нового напитка:</p>
-          {{ request.path }}
+
         <hr>
         <form action="{% url 'doc_temp:doc_add' prev_page %}" method="post">
           {% csrf_token %}

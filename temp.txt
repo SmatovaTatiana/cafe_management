@@ -68,3 +68,6 @@ def product_detail(request, slug):
                   'cafecrm/product_detail.html',
                   {'product': product})
 
+
+{{ request.META.HTTP_REFERER }} - получить адрес предыдущей страницы
+{{ request.path }} - получить адрес текущей страницы
