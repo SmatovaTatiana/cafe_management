@@ -2,8 +2,12 @@ from django import forms
 from cafecrm.models import Products, Drink
 
 
+def product_choice():
+    product_choice = [(item.id, str(item.product_name)) for item in Products.objects.all()]
+    return product_choice
+
 class DoctempAddProductForm(forms.Form):
-    product_name = forms.ChoiceField(choices=[(item.id, str(item.product_name)) for item in Products.objects.all()], label='Товар')
+    product_name = forms.ChoiceField(choices=product_choice, label='Товар')
     quantity = forms.IntegerField(min_value=1, label='Количество')
     update = forms.BooleanField(required=False, initial=False, widget=forms.HiddenInput)
 
